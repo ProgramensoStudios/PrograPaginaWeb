@@ -2392,49 +2392,62 @@ section.team#equipo {
 
   transform: rotate(-6deg);
 }
-
+/* Bean*/
 .photo-1_2 {
-  width: 300px;
-  height: 300px;
+  width: 249px;
+  height: 357px;
 
-  left: 70%;
-  top: 10%;
+  left: 4%;
+  top: 43%;
 
   transform: rotate(-6deg);
 }
+
+/* Car*/
 .photo-2_2 {
-  width: 300px;
-  height: 300px;
+  width: 212px;
+  height: 216px;
 
-  left: 10%;
-  top: 10%;
+  left: 15%;
+  top: 45%;
 
   transform: rotate(-6deg);
 }
+
+/* PS*/
 .photo-3_2 {
-  width: 300px;
-  height: 300px;
+  width: 228px;
+  height: 200px;
 
-  left: 10%;
-  top: 10%;
+  left: 15%;
+  top: 25%;
 
   transform: rotate(-6deg);
 }
+/* Waffle */
 .photo-4_2 {
-  width: 300px;
-  height: 300px;
+  width: 312px;
+  height: 238px;
 
-  left: 10%;
-  top: 10%;
-
-  transform: rotate(-6deg);
+  left: 25%;
+  top: 32%;
 }
 .photo-5_2 {
-  width: 300px;
-  height: 300px;
+  width: 414px;
+  height: 329px;
 
-  left: 10%;
-  top: 10%;
+  left: 25%;
+  top: 55%;
 
   transform: rotate(-6deg);
+}
+
+.photo-6_2 {
+  width: 450px;
+  height: 800px;
+
+  left: 65%;
+  top: 15%;
+
+  
 }
