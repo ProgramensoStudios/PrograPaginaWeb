@@ -1,0 +1,1305 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProgramensoStudios — Home</title>
+    <meta
+      name="description"
+      content="Estudio creativo: proyectos con marcas, proyectos propios y el equipo detrás de la cámara."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- model-viewer: renderiza objetos 3D en formato .glb/.gltf directo en HTML -->
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+  </head>
+  <body
+    style="
+      --bg-image-mobile-global: url(&quot;recursos/secciones/phoneBg.png&quot;);
+    "
+  >
+    <!-- ↑ Esta es la ÚNICA imagen de fondo que se usa en mobile para todo el
+     sitio. Cámbiala por la que prefieras editando esta misma línea. -->
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- NAV -->
+    <header class="nav" id="nav">
+      <a href="#hero" class="nav__logo"
+        ><img src="recursos//logos/iso.png" width="50" alt="iso" /><span
+          >•</span
+        ></a
+      >
+      <nav class="nav__links" id="navLinks">
+        <a href="#about">Nosotros</a>
+        <a href="#marcas">Marcas</a>
+        <a href="#propios">Propios</a>
+        <a href="#equipo">Equipo</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#drawer">Próximamente</a>
+        <a href="#support">Apoya al Estudio</a>
+        <a href="#contacto" class="nav__cta">Contáctanos</a>
+      </nav>
+      <button
+        class="nav__burger"
+        id="burger"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <section
+      class="hero"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/home.png&quot;)"
+    >
+      <div class="hero__logo reveal" aria-hidden="true">
+        <span class="hero__logo-glow"></span>
+        <img src="recursos/logos/logo.png" alt="" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- ============ HERO ============ -->
+    <section
+      class="hero"
+      id="hero"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/welcome.png&quot;)"
+    >
+      <div class="hero__bg" id="heroBg" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <div class="hero__block hero__block--ghost">
+          <p class="eyebrow reveal">— Bienvenidos al mundo de Poggy</p>
+          <h1 class="hero__title reveal">
+            <span class="hero__title-line">Mundos</span>
+            <span class="hero__title-line hero__title-line--accent"
+              >historias</span
+            >
+            <span class="hero__title-line">creativas </span>
+            <span class="hero__title-line hero__title-line--outline"
+              >inovadoras.</span
+            >
+          </h1>
+          <p class="hero__sub reveal">
+            Somos un estudio creativo e innovador que crea experiencias para
+            marcas y desarrolla proyectos propios, con el objetivo de ofrecer a
+            los usuarios nuevas formas de disfrutar, interactuar y conectar.
+          </p>
+          <a href="#about" class="btn btn--ghost reveal">Conócenos ↓</a>
+        </div>
+      </div>
+
+      <div class="hero__scroll" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="hero__scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section
+      class="about bg-fullwidth"
+      id="about"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/about_us.png&quot;)"
+    >
+      <div class="hero__block black" aria-hidden="true">
+        <div class="about__text reveal-right">
+          <p class="eyebrow">— NOSOTROS</p>
+          <h2 class="h2">Porque ser menso es la decisión mas inteligente.</h2>
+          <p class="body-text">
+            Somos un equipo de trabajo comprometido, innovador y disruptivo.
+          </p>
+          <p class="body-text">
+            Desde experiencias digitales hasta videojuegos personalizados,
+            cuidamos cada detalle para crear experiencias que se sientan
+            naturales, intuitivas y pensadas para que los jugadores disfruten al
+            máximo.
+          </p>
+          <div class="about__stats">
+            <div><strong>+1.4M</strong><span>Jugadores Impactados</span></div>
+            <div><strong>8</strong><span>Personas en el equipo</span></div>
+            <div><strong>∞</strong><span>Cafés consumidos</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="hero about-gallery"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/about_us_fotos.png&quot;)"
+    >
+      <div class="about-gallery__photos">
+        <div class="about-gallery__photo photo-1">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto1.png" alt="Foto 1" />
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-2">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto2.png" alt="Foto 2" />
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-3">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto3.png" alt="Foto 3" />
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-4">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto4.png" alt="Foto 4" />
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-5">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto5.png" alt="Foto 5" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== VIDEO HERO ==================
+ <section class="video-hero" id="video-hero">
+  <div class="video-hero__bg" aria-hidden="true"></div>
+  <div class="video-hero__overlay" aria-hidden="true"></div>
+
+  <div class="video-hero__content">
+    <video src="recursos/video2.mp4" autoplay muted loop  alt="Espacio para foto o video del equipo en producción" loading="lazy">
+  </div>-->
+
+    <!-- ============ PROYECTOS CON MARCAS ============ -->
+    <!-- BANNER FULL WIDTH (De borde a borde de la pantalla) -->
+    <div
+      class="banner-marcas"
+      id="marcas"
+      style="background-image: url(&quot;recursos/secciones/titulo1.png&quot;)"
+    >
+      <div class="banner-marcas__content block black">
+        <p class="eyebrow">— TRABAJO CON MARCAS</p>
+        <h2 class="h2">
+          Proyectos <span class="accent-lime">para marcas.</span>
+        </h2>
+        <p class="section-head__sub">
+          Producción, dirección y edición para clientes que confiaron en
+          nosotros.
+        </p>
+      </div>
+    </div>
+    <!-- ============ AQUI IMAGEN ENFRENTE ============ -->
+    <div
+      class="showcase showcase--personal bf-front"
+      data-bg=""
+      data-showcase=""
+      style="--bg-image: url(&quot;recursos/secciones/marcas.png&quot;)"
+    >
+      <div class="showcase__bgs">
+        <div class="showcase__bg is-active">
+          <video
+            autoplay=""
+            loop=""
+            muted=""
+            playsinline=""
+            src="recursos/videos/PizzaPizzaGameplay.mp4"
+          ></video>
+        </div>
+        <div class="showcase__bg is-active">
+          <video
+            autoplay=""
+            loop=""
+            muted=""
+            playsinline=""
+            src="recursos/videos/BoloMapa.mp4"
+          ></video>
+        </div>
+        <div class="showcase__bg is-active">
+          <video
+            autoplay=""
+            loop=""
+            muted=""
+            playsinline=""
+            src="recursos/videos/BonafontMapa.mp4"
+          ></video>
+        </div>
+        <div class="showcase__bg is-active">
+          <video
+            autoplay=""
+            loop=""
+            muted=""
+            playsinline=""
+            src="recursos/videos/Cherry.mp4"
+          ></video>
+        </div>
+      </div>
+      <div class="showcase__stage">
+        <button
+          aria-label="Proyecto anterior"
+          class="showcase__arrow showcase__arrow--prev"
+          data-prev=""
+          type="button"
+        >
+          ‹
+        </button>
+        <div class="showcase__viewport">
+          <div class="showcase__track">
+            <article class="showcase__slide">
+              <div class="showcase__caption">
+                <span class="showcase__eyebrow">Little Ceasars · 2026</span>
+                <h3>
+                  <a
+                    href="https://www.fortnite.com/@programenso/0881-5858-2747"
+                    target="_blank"
+                    ><u>Pizza Pizza Stadium</u>
+                  </a>
+                </h3>
+                <p>
+                  Mapa personalizado de Fornite para Little Caesars, con
+                  jugabilidad de Battle Royale para un torneo
+                </p>
+                <img
+                  alt="Little Ceasars"
+                  class="showcase__logo"
+                  loading="lazy"
+                  src="recursos/logos/LITTLE CAESARS V naranja.png"
+                />
+              </div>
+            </article>
+            <article class="showcase__slide">
+              <div class="showcase__caption">
+                <span class="showcase__eyebrow">Liverpool · 2026</span>
+                <h3>Bolo Fest</h3>
+                <p>
+                  Un mapa personalizado en Roblox estilizado al mundo de
+                  Liverpool, donde podias ganar entradas al desfile navideño de
+                  Liverpool.
+                </p>
+                <img
+                  alt="Espacio para logo del cliente"
+                  class="showcase__logo"
+                  loading="lazy"
+                  src="recursos/logos/image (5).png"
+                />
+              </div>
+            </article>
+            <article class="showcase__slide">
+              <div class="showcase__caption">
+                <span class="showcase__eyebrow">Bonafont · 2026</span>
+                <h3>
+                  <a
+                    href="https://www.fortnite.com/@programenso/8773-7853-5047"
+                    target="_blank"
+                    ><u>Naturalmente Poderosas</u>
+                  </a>
+                </h3>
+                <p>
+                  Mapa personalizado de Fornite para Bonafot: Obby de Gravedad
+                  jugado por Alana Flores y otras 4 streamers.
+                </p>
+                <img
+                  alt="Bonafont"
+                  class="showcase__logo"
+                  loading="lazy"
+                  src="recursos/logos/Bonafont.png"
+                />
+              </div>
+            </article>
+            <article class="showcase__slide">
+              <div class="showcase__caption">
+                <span class="showcase__eyebrow">Twitch · 2025</span>
+                <h3>
+                  <a
+                    href="https://www.fortnite.com/@programenso/8773-7853-5047"
+                    target="_blank"
+                    ><u>Cherry Dojo Quest</u>
+                  </a>
+                </h3>
+                <p>
+                  Un mapa personalizado en Roblox para un evento de 3 días de
+                  twitch donde participaron mas de 50 streamers invitados.
+                </p>
+                <img
+                  alt="Bonafont"
+                  class="showcase__logo"
+                  loading="lazy"
+                  src="recursos/logos/logocherry.png"
+                />
+              </div>
+            </article>
+          </div>
+        </div>
+        <button
+          aria-label="Siguiente proyecto"
+          class="showcase__arrow showcase__arrow--next"
+          data-next=""
+          type="button"
+        >
+          ›
+        </button>
+      </div>
+      <div class="showcase__dots" data-dots=""></div>
+    </div>
+
+    <!-- BANNER DE TÍTULO (Fuera de la sección para ocupar el 100% de la pantalla) -->
+    <div
+      class="banner-marcas"
+      style="background-image: url(&quot;recursos/secciones/titulo2.png&quot;)"
+    >
+      <div class="banner-marcas__content block black">
+        <p class="eyebrow">— TRABAJO PROPIO</p>
+        <h2 class="h2">Proyectos <span class="accent-lime">Propios.</span></h2>
+        <p class="section-head__sub">
+          Producción, dirección y contenido original creado por nuestro equipo.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ PROYECTOS PROPIOS (Contenido/Grid) ============ -->
+    <section
+      class="work work--personal"
+      data-bg=""
+      id="propios"
+      style="--bg-image: url(&quot;recursos/fondos/propios.jpg&quot;)"
+    >
+      <!-- Aquí van las cards o el contenido proyectos propios -->
+      <div
+        class="showcase showcase--personal bf-front"
+        data-bg=""
+        data-showcase=""
+        style="--bg-image: url(&quot;recursos/secciones/propios.png&quot;)"
+      >
+        <div class="showcase__bgs">
+          <div class="showcase__bg is-active">
+            <video
+              autoplay=""
+              loop=""
+              muted=""
+              playsinline=""
+              src="recursos/videos/video2.mp4"
+            ></video>
+          </div>
+          <div class="showcase__bg is-active">
+            <video
+              autoplay=""
+              loop=""
+              muted=""
+              playsinline=""
+              src="recursos/videos/2PlayerObby.mp4"
+            ></video>
+          </div>
+          <div class="showcase__bg is-active">
+            <video
+              autoplay=""
+              loop=""
+              muted=""
+              playsinline=""
+              src="recursos/videos/RobloxRealUnder.mp4"
+            ></video>
+          </div>
+          <div class="showcase__bg is-active">
+            <video
+              autoplay=""
+              loop=""
+              muted=""
+              playsinline=""
+              src="recursos/videos/FuriaLaser.mp4"
+            ></video>
+          </div>
+          <div class="showcase__bg is-active">
+            <video
+              autoplay=""
+              loop=""
+              muted=""
+              playsinline=""
+              src="recursos/videos/MapaPoggySplash.mp4"
+            ></video>
+          </div>
+        </div>
+        <div class="showcase__stage">
+          <button
+            aria-label="Proyecto anterior"
+            class="showcase__arrow showcase__arrow--prev"
+            data-prev=""
+            type="button"
+          >
+            ‹
+          </button>
+          <div class="showcase__viewport">
+            <div class="showcase__track">
+              <article class="showcase__slide">
+                <div class="showcase__caption">
+                  <span class="showcase__eyebrow">Propio · 2026</span>
+                  <h3>
+                    <a
+                      href="https://www.roblox.com/es/games/103826288323299/Dance-Seek"
+                      target="_blank"
+                      ><u>Dance &amp; Seek</u>
+                    </a>
+                  </h3>
+                  <p>
+                    Un juego de ritmo en Roblox donde deberás bailar al compás
+                    de la música para esconderte del buscador. ¡Pero cuidado! Si
+                    te encuentra, te convertirás en uno de ellos.
+                  </p>
+                </div>
+              </article>
+              <article class="showcase__slide">
+                <div class="showcase__caption">
+                  <span class="showcase__eyebrow">Propio · 2026</span>
+                  <h3>
+                    <a
+                      href="https://www.roblox.com/es/games/117792765526868/1-Speed"
+                      target="_blank"
+                      ><u>+1 Speed Player [Co-op]</u>
+                    </a>
+                  </h3>
+                  <p>
+                    Un juego de Roblox para dos jugadores, donde la coordinación
+                    y el trabajo en equipo serán clave para mejorar juntos y
+                    superar todos los desafíos que el mundo tiene por ofrecer.
+                  </p>
+                </div>
+              </article>
+              <article class="showcase__slide">
+                <div class="showcase__caption">
+                  <span class="showcase__eyebrow">Propio · 2026</span>
+                  <h3>
+                    <a
+                      href="https://www.roblox.com/es/games/87991707866462/RealUnder"
+                      target="_blank"
+                      ><u>Real Under</u>
+                    </a>
+                  </h3>
+                  <p>
+                    Concierto virtual en roblox personalizado para el EP “Real
+                    Under” de Sarmientos, La Shorty y DJ Besitos
+                  </p>
+                </div>
+              </article>
+              <article class="showcase__slide">
+                <div class="showcase__caption">
+                  <span class="showcase__eyebrow">Propio · 2026</span>
+                  <h3>Furia Laser</h3>
+                  <p>
+                    Un juego de realidad virtual (VR), donde tendrás que luchar
+                    para acabar con la invasión robótica que ha llegado a tu
+                    nave.
+                  </p>
+                </div>
+              </article>
+              <article class="showcase__slide">
+                <div class="showcase__caption">
+                  <span class="showcase__eyebrow">Propio · 2024</span>
+                  <h3>
+                    <a
+                      href="https://programensostudios.itch.io/poggy-splash"
+                      target="_blank"
+                      ><u>Poggy Splash</u>
+                    </a>
+                  </h3>
+                  <p>
+                    Un juego donde tendrás que competir con tus amigos para ver
+                    quién puede recolectar más jabones y convertirse en el
+                    campeón de la bañera.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+          <button
+            aria-label="Siguiente proyecto"
+            class="showcase__arrow showcase__arrow--next"
+            data-next=""
+            type="button"
+          >
+            ›
+          </button>
+        </div>
+        <div class="showcase__dots" data-dots=""></div>
+      </div>
+    </section>
+
+    <!-- ============ EQUIPO ============ -->
+    <section
+      class="team"
+      id="equipo"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/equipo.png&quot;)"
+    >
+      <div class="section-head reveal block black">
+        <p class="eyebrow">— LAS CARAS DETRÁS DE LOS JUEGOS</p>
+        <h2 class="h2">El equipo.</h2>
+      </div>
+
+      <div class="team__layout">
+        <div class="team__drawer">
+          <div class="team__drawer-lid">
+            <img
+              src="recursos/locker.png"
+              alt=""
+              class="team__drawer-lid-img"
+            />
+          </div>
+
+          <div class="team__shelf" id="teamShelf">
+            <div
+              class="team__figure"
+              style="--delay: 0"
+              data-name="Kary Vellenaweth"
+              data-role="Programadora / Proyect Manager"
+              data-quote="Mensx por naturaleza."
+              data-photo="assets/placeholders/team-1.svg"
+              data-face-x="50"
+              data-face-y="64"
+              data-head-idle="recursos/integrantes/KaryCabezaIdle.png"
+              data-head-grabbed="recursos/integrantes/KaryCabezaGrabbed.png"
+              data-body-idle="recursos/integrantes/KaryCuerpoIdle.png"
+              data-body-grabbed="recursos/integrantes/KaryCuerpoGrabbed.png"
+            >
+              <div class="team__drag">
+                <div class="team__cutout">
+                  <div class="team__rig">
+                    <img
+                      class="team__head"
+                      src="recursos/integrantes/KaryCabezaIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                    <img
+                      class="team__body"
+                      src="recursos/integrantes/KaryCuerpoIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+                <h4>Kary</h4>
+                <span>Programadora / Proyect Manager</span>
+              </div>
+            </div>
+            <div
+              class="team__figure"
+              style="--delay: 1"
+              data-name="Yuls Murillo"
+              data-role="Lead Artist"
+              data-quote="Cállate Keni"
+              data-photo="assets/placeholders/team-2.svg"
+              data-face-x="45"
+              data-face-y="20"
+              data-head-idle="recursos/integrantes/YulsCabezaIdle.png"
+              data-head-grabbed="recursos/integrantes/YulsCabezaGrabbed.png"
+              data-body-idle="recursos/integrantes/YulsCuerpoIdle.png"
+              data-body-grabbed="recursos/integrantes/YulsCuerpoGrabbed.png"
+            >
+              <div class="team__drag">
+                <div class="team__cutout">
+                  <div class="team__rig">
+                    <img
+                      class="team__head"
+                      src="recursos/integrantes/YulsCabezaIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                    <img
+                      class="team__body"
+                      src="recursos/integrantes/YulsCuerpoIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+                <h4>Yuls</h4>
+                <span>Lead Artist</span>
+              </div>
+            </div>
+            <div
+              class="team__figure"
+              style="--delay: 2"
+              data-name="Charly Ramos"
+              data-role="Programador / Game Designer"
+              data-quote="Menso hasta el hueso."
+              data-photo="assets/placeholders/team-3.svg"
+              data-face-x="70"
+              data-face-y="65"
+              data-head-idle="recursos/integrantes/CharCabezaIdle.png"
+              data-head-grabbed="recursos/integrantes/CharCabezaGrabbed.png"
+              data-body-idle="recursos/integrantes/CharCuerpoIdle.png"
+              data-body-grabbed="recursos/integrantes/CharCuerpoGrabbed.png"
+            >
+              <div class="team__drag">
+                <div class="team__cutout">
+                  <div class="team__rig">
+                    <img
+                      class="team__head"
+                      src="recursos/integrantes/CharCabezaIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                    <img
+                      class="team__body"
+                      src="recursos/integrantes/CharCuerpoIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+                <h4>Charly</h4>
+                <span>Programador / Game Designer</span>
+              </div>
+            </div>
+            <div
+              class="team__figure"
+              style="--delay: 4"
+              data-name="Kenneth Álvarez del Castillo"
+              data-role="Lead Developer"
+              data-quote="Progra aveces, menso siempre"
+              data-photo="assets/placeholders/team-5.svg"
+              data-face-x="38"
+              data-face-y="32"
+              data-head-idle="recursos/integrantes/KennyCabezaIdle.png"
+              data-head-grabbed="recursos/integrantes/KennyCabezaGrabbed.png"
+              data-body-idle="recursos/integrantes/KennyCuerpoIdle.png"
+              data-body-grabbed="recursos/integrantes/KennyCuerpoGrabbed.png"
+            >
+              <div class="team__drag">
+                <div class="team__cutout">
+                  <div class="team__rig">
+                    <img
+                      class="team__head"
+                      src="recursos/integrantes/KennyCabezaIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                    <img
+                      class="team__body"
+                      src="recursos/integrantes/KennyCuerpoIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+                <h4>Kenneth</h4>
+                <span>Lead Developer</span>
+              </div>
+            </div>
+            <div
+              class="team__figure"
+              style="--delay: 5"
+              data-name="Paco Vellenaweth"
+              data-role="3D / Animation Artist"
+              data-quote="Menso sin remedio."
+              data-photo="assets/placeholders/team-6.svg"
+              data-face-x="61"
+              data-face-y="37"
+              data-head-idle="recursos/integrantes/PacoCabezaIdle.png"
+              data-head-grabbed="recursos/integrantes/PacoCabezaGrabbed.png"
+              data-body-idle="recursos/integrantes/PacoCuerpoIdle.png"
+              data-body-grabbed="recursos/integrantes/PacoCuerpoGrabbed.png"
+            >
+              <div class="team__drag">
+                <div class="team__cutout">
+                  <div class="team__rig">
+                    <img
+                      class="team__head"
+                      src="recursos/integrantes/PacoCabezaIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                    <img
+                      class="team__body"
+                      src="recursos/integrantes/PacoCuerpoIdle.png"
+                      alt=""
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+                <h4>Paco</h4>
+                <span>3D / Animation Artist</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="team__profile reveal-right" id="teamProfile">
+          <div class="team__profile-empty" id="teamProfileEmpty">
+            <p>Toca a alguien del equipo<br />para conocerlo.</p>
+          </div>
+          <div class="team__preview">
+            <div class="team__preview-viewport" id="teamViewport">
+              <!-- Capa blureada: se ve completa (de fondo) solo cuando hay alguien seleccionado -->
+              <img
+                src="recursos/integrantes/team3.png"
+                alt=""
+                aria-hidden="true"
+                id="teamBlurImg"
+                class="team__preview-img team__preview-img--blur"
+              />
+              <!-- Capa nítida: siempre visible, pero se "recorta" con clip-path a un círculo
+         cuando hay selección, dejando ver la capa blureada por fuera del círculo -->
+              <img
+                src="recursos/integrantes/team3.png"
+                alt="Foto del equipo"
+                id="teamFullImg"
+                class="team__preview-img team__preview-img--sharp"
+              />
+
+              <div class="team__circle-focus" id="teamCircleFocus"></div>
+            </div>
+
+            <div class="team__info" id="teamInfo">
+              <h3 id="memberName">Nombre</h3>
+              <p id="memberRole">Rol / Puesto</p>
+              <p id="memberQuote" class="team__info-quote"></p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ SERVICIOS (CARTAS 3D FULLSCREEN) ============ -->
+    <section
+      class="services"
+      id="servicios"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/servicios.png&quot;)"
+    >
+      <div class="section-head block black reveal">
+        <p class="eyebrow">— LO QUE HACEMOS</p>
+        <h2 class="h2">Nuestros <span class="accent-lime">Servicios.</span></h2>
+        <p class="section-head__sub">
+          Selecciona una carta para voltearla y explorar los detalles.
+        </p>
+      </div>
+
+      <div class="services__grid">
+        <!-- Carta 1 -->
+        <article class="service-card" data-service-card>
+          <div class="service-card__inner">
+            <div class="service-card__face service-card__face--front">
+              <span class="service-card__badge">01</span>
+              <h3>Desarrollo Digital</h3>
+              <p>Experiencias interactivas gaminificadas.</p>
+              <span class="service-card__hint">Haz click para expandir ⤢</span>
+            </div>
+          </div>
+
+          <dialog
+            class="service-modal"
+            data-service-modal
+            style="--bg-img: url(&quot;recursos/serviciosdigitales.png&quot;)"
+          >
+            <button
+              type="button"
+              class="service-modal__close"
+              aria-label="Cerrar detalles"
+            >
+              ✕
+            </button>
+            <div class="service-modal__content block black">
+              <span class="eyebrow">— DETALLES DEL SERVICIO</span>
+              <h2 style="color: var(--white)">Desarrollo Digital</h2>
+              <p class="body-text">
+                Desarrollamos experiencias interactivas y gamificadas para todo
+                tipo de plataforma y necesidad.
+              </p>
+              <ul class="service-modal__list" style="color: var(--white)">
+                <li>
+                  • <strong>Experiencias Digitales:</strong> Simuladores,
+                  Activaciones, Concursos
+                </li>
+                <li>
+                  • <strong>Juegos Personalizados: </strong>PC, Mobile, VR
+                </li>
+                <li>
+                  • <strong>Mapas Personalizados:</strong> Roblox y Fortnite
+                </li>
+                <li>
+                  • <strong>Eventos Digitales:</strong> Conciertos, Fiestas,
+                  Meetings
+                </li>
+              </ul>
+              <a
+                href="https://wa.me/5579387815"
+                target="_blank"
+                class="btn btn--solid service-modal__cta"
+                data-close-modal
+                >Cotizar servicio →</a
+              >
+            </div>
+          </dialog>
+        </article>
+
+        <!-- Carta 2 -->
+        <article class="service-card" data-service-card>
+          <div class="service-card__inner">
+            <div class="service-card__face service-card__face--front">
+              <span class="service-card__badge">02</span>
+              <h3>Activación Presencial</h3>
+              <p>Zonas de experiencia inmersiva y eventos físicos.</p>
+              <span class="service-card__hint">Haz click para expandir ⤢</span>
+            </div>
+          </div>
+
+          <dialog
+            class="service-modal"
+            data-service-modal
+            style="--bg-img: url(&quot;recursos/expo2.png&quot;)"
+          >
+            <button
+              type="button"
+              class="service-modal__close"
+              aria-label="Cerrar detalles"
+            >
+              ✕
+            </button>
+            <div class="service-modal__content block black">
+              <span class="eyebrow">— DETALLES DEL SERVICIO</span>
+              <h2 style="color: var(--white)">Activación Presencial</h2>
+              <p class="body-text">
+                Creamos mundos virtuales e integración 3D interactiva para
+                sitios web y videojuegos (Roblox/Unreal Engine).
+              </p>
+              <ul class="service-modal__list">
+                <li>
+                  •<strong>Zonas Gamer:</strong> Planificación, Montaje y
+                  Personal en Sitio
+                </li>
+                <li>
+                  •<strong>Activaciónes Presenciales:</strong> Montaje, Diseño,
+                  Personal en Sitio
+                </li>
+                <li>
+                  •<strong>Torneos:</strong>Desarrollo, Planificación, Gestión,
+                  Entrega de Premios
+                </li>
+              </ul>
+              <a
+                href="https://wa.me/5579387815"
+                target="_blank"
+                class="btn btn--solid service-modal__cta"
+                data-close-modal
+                >Cotizar servicio →</a
+              >
+            </div>
+          </dialog>
+        </article>
+
+        <!-- Carta 3 -->
+        <article class="service-card" data-service-card>
+          <div class="service-card__inner">
+            <div class="service-card__face service-card__face--front">
+              <span class="service-card__badge">03</span>
+              <h3>Educativo</h3>
+              <p>Diseño y desarrollo de contenido educativo interactivo.</p>
+              <span class="service-card__hint">Haz click para expandir ⤢</span>
+            </div>
+          </div>
+
+          <dialog
+            class="service-modal"
+            data-service-modal
+            style="--bg-img: url(&quot;recursos/cursos.png&quot;)"
+          >
+            <button
+              type="button"
+              class="service-modal__close"
+              aria-label="Cerrar detalles"
+            >
+              ✕
+            </button>
+            <div class="service-modal__content block black">
+              <span class="eyebrow">— DETALLES DEL SERVICIO</span>
+              <h2 style="color: var(--white)">Educativo</h2>
+              <p class="body-text">
+                Creamos experiencias educativas interactivas y gamificadas para
+                todo tipo de plataforma y necesidad.
+              </p>
+              <ul class="service-modal__list">
+                <li>
+                  • <strong>Cursos:</strong> Planificación, Impartición,
+                  Evaluación
+                </li>
+                <li>• <strong>Talleres:</strong> Diseño, Implementación</li>
+                <li>
+                  • <strong>Game Jams:</strong> Planificación, Gestión,
+                  Ejecución
+                </li>
+              </ul>
+              <a
+                href="https://wa.me/5579387815"
+                target="_blank"
+                class="btn btn--solid service-modal__cta"
+                data-close-modal
+                >Cotizar servicio →</a
+              >
+            </div>
+          </dialog>
+        </article>
+
+        <!-- Carta 4 -->
+        <article class="service-card" data-service-card>
+          <div class="service-card__inner">
+            <div class="service-card__face service-card__face--front">
+              <span class="service-card__badge">04</span>
+              <h3>Corporativo</h3>
+              <p>Diseño y desarrollo de soluciones digitales para empresas.</p>
+              <span class="service-card__hint">Haz click para expandir ⤢</span>
+            </div>
+          </div>
+
+          <dialog
+            class="service-modal"
+            data-service-modal
+            style="--bg-img: url(&quot;recursos/cursos.png&quot;)"
+          >
+            <button
+              type="button"
+              class="service-modal__close"
+              aria-label="Cerrar detalles"
+            >
+              ✕
+            </button>
+            <div class="service-modal__content block black">
+              <span class="eyebrow">— DETALLES DEL SERVICIO</span>
+              <h2 style="color: var(--white)">Corporativo</h2>
+              <p class="body-text">
+                Diseñamos soluciones digitales que impulsan la innovación y el
+                crecimiento empresarial.
+              </p>
+              <ul class="service-modal__list">
+                <li>
+                  • <strong>Team Building:</strong> Acerca a tu equipo a través
+                  de la gamificación
+                </li>
+                <li>
+                  • <strong>Conferencias Digitales:</strong> Aplica la
+                  Gamificación en eventos, donde quieras
+                </li>
+                <li>
+                  • <strong>Juegos GROWTH:</strong> Viodeojuegos para fortalecer
+                  Soft Skills
+                </li>
+                <li>
+                  • <strong>Ofi Gaming Day:</strong> Conecta con tu equipo a
+                  través de los videojuegos
+                </li>
+              </ul>
+              <a
+                href="#contacto"
+                class="btn btn--solid service-modal__cta"
+                data-close-modal
+                >Cotizar servicio →</a
+              >
+            </div>
+          </dialog>
+        </article>
+
+        <!-- Carta 5 -->
+        <article class="service-card" data-service-card>
+          <div class="service-card__inner">
+            <div class="service-card__face service-card__face--front">
+              <span class="service-card__badge">05</span>
+              <h3>Influencer Marketing</h3>
+              <p>
+                Estrategias de marketing para colaborar con influencers y
+                alcanzar públicos específicos.
+              </p>
+              <span class="service-card__hint">Haz click para expandir ⤢</span>
+            </div>
+          </div>
+
+          <dialog
+            class="service-modal"
+            data-service-modal
+            style="--bg-img: url(&quot;recursos/imk.png&quot;)"
+          >
+            <button
+              type="button"
+              class="service-modal__close"
+              aria-label="Cerrar detalles"
+            >
+              ✕
+            </button>
+            <div class="service-modal__content block black">
+              <span class="eyebrow">— DETALLES DEL SERVICIO</span>
+              <h2 style="color: var(white)">Influencer Marketing</h2>
+              <p class="body-text">
+                No se trata de seguidores. Se trata de comunidades. Conectamos
+                tu marca con los creadores que Gen Z y Alpha ya siguen, admiran
+                y escuchan — con estrategias diseñadas para generar impacto
+                real, no solo impresiones.
+              </p>
+              <ul class="service-modal__list">
+                <li>• Identificación y selección de influencers</li>
+                <li>• Estrategia de contenido gamificado</li>
+                <li>• Activaciones de IMK Campaingns</li>
+                <li>• Métricas y seguimiento de resultados</li>
+              </ul>
+              <a
+                href="https://agenciaplaybook.com/"
+                text?="Saber Más sobre servicio Influencer Marketing"
+                target="_blank"
+                class="btn btn--solid service-modal__cta"
+                data-close-modal
+                >Saber más →
+              </a>
+              <br />
+              <a
+                href="https://wa.me/5579387815"
+                text?="Cotizar servicio Influencer Marketing"
+                target="_blank"
+                class="btn btn--solid service-modal__cta"
+                data-close-modal
+                >Cotizar servicio →</a
+              >
+              <br />
+              <a href="https://agenciaplaybook.com/" target="_blank">
+                <img
+                  src="recursos/logos/pb.png"
+                  style="max-width: 8dvh; margin-left: 1.5rem"
+                  alt="Logo Playbook"
+                />
+              </a>
+            </div>
+          </dialog>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PRÓXIMAMENTE ============ 
+<section class="soon" id="proximamente" data-bg style="--bg-image:url('recursos/fondos/proximamente.jpg'); --bg-opacity:0.45">
+  <div class="soon__glow" aria-hidden="true"></div>
+  <p class="eyebrow eyebrow--light reveal">— ALGO ESTÁ POR LLEGAR</p>
+  <h2 class="soon__title reveal">Próximamente</h2>
+  <p class="soon__sub reveal">13 de septiembre</p>
+
+  <div class="soon__ring" aria-hidden="true"></div>
+</section>-->
+
+    <!-- ============ PHRASE (frase + tina de pelotas interactiva) ============ 
+<section class="phrase" id="phrase">
+  <p class="eyebrow reveal">— NUESTRA FILOSOFÍA</p>
+  <h2 class="phrase__title reveal">
+    “Cada partida es una historia<br>
+    <span class="accent-lime">que tú decides jugar.</span>”
+  </h2>
+
+  <div class="phrase__pit" id="phrasePit">
+    <canvas id="ballPitCanvas" aria-hidden="true"></canvas>
+    <p class="phrase__pit-hint">Mueve el mouse por aquí ↝</p>
+  </div>
+</section>-->
+
+    <!-- ============ DRAWER ============ -->
+    <section
+      class="drawer"
+      id="drawer"
+      style="--bg-image: url(&quot;recursos/secciones/PROXIMAMENTE.png&quot;)"
+    >
+      <!-- ↑ Fondo del "nuevo Próximamente": recursos/secciones/PROXIMAMENTE.png
+       (ojo con mayúsculas/minúsculas y carpeta exactas, importa en el server) -->
+      <!-- wrapper que hace el clip SIN romper sticky -->
+      <div class="drawer__clip">
+        <div class="drawer__stage">
+          <!-- Front: se queda quieto, y su tamaño real define el tamaño de la cajita -->
+          <!-- ↓ Cambia esta ruta por donde tengas tu drawer_front.png -->
+          <img
+            class="drawer__back"
+            src="recursos/secciones/drawer_front.png"
+            alt=""
+            aria-hidden="true"
+          />
+
+          <!-- Back: baja desde arriba, EXACTO del mismo tamaño que el front.
+           Ahora es un wrapper (no solo la imagen) para que el countdown
+           viva DENTRO y baje pegado a la imagen, como si estuviera
+           impreso en el cajón. -->
+          <!-- ↓ Cambia esta ruta por donde tengas tu drawer_back.png -->
+          <div
+            class="drawer__panel"
+            id="drawerPanel"
+            style="width: 85%; height: 85%"
+          >
+            <img
+              class="drawer__panel-img"
+              src="recursos/secciones/drawer_back.png"
+              alt=""
+              aria-hidden="true"
+            />
+
+            <!-- Countdown: pegado a la imagen del cajón, baja/sube CON ella -->
+            <div
+              class="drawer__countdown"
+              id="drawerCountdown"
+              aria-live="polite"
+            >
+              <div class="drawer__countdown-card">
+                <p class="drawer__countdown-eyebrow">— ALGO ESTÁ POR LLEGAR</p>
+                <p class="drawer__countdown-date">13 de septiembre</p>
+                <div class="countdown" id="countdown">
+                  <div class="countdown__unit">
+                    <span class="countdown__num" id="cd-days">00</span>
+                    <span class="countdown__label">Días</span>
+                  </div>
+                  <div class="countdown__sep">:</div>
+                  <div class="countdown__unit">
+                    <span class="countdown__num" id="cd-hours">00</span>
+                    <span class="countdown__label">Horas</span>
+                  </div>
+                  <div class="countdown__sep">:</div>
+                  <div class="countdown__unit">
+                    <span class="countdown__num" id="cd-min">00</span>
+                    <span class="countdown__label">Min</span>
+                  </div>
+                  <div class="countdown__sep">:</div>
+                  <div class="countdown__unit">
+                    <span class="countdown__num" id="cd-sec">00</span>
+                    <span class="countdown__label">Seg</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Support ============ -->
+    <section
+      class="hero about-gallery"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/about_us_fotos.png&quot;)"
+      id="support"
+    >
+      <div class="about-gallery__photos">
+        <div class="about-gallery__photo photo-1_2">
+          <div class="about-gallery__frame">
+            <a
+              href="https://www.roblox.com/share?code=d796bdc35cefac46babe1f1f3749a969&type=ExperienceDetails&stamp=1788552021134"
+              target="_blank"
+            >
+              <img
+                src="recursos/fotos/foto1.png"
+                alt="Dance & Seek videojuego de Roblox original de ProgramensoStudios"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-2_2">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto2.png" alt="Foto 2" />
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-3_2">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto3.png" alt="Foto 3" />
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-4_2">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto4.png" alt="Foto 4" />
+          </div>
+        </div>
+
+        <div class="about-gallery__photo photo-5_2">
+          <div class="about-gallery__frame">
+            <img src="recursos/fotos/foto5.png" alt="Foto 5" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer
+      class="footer"
+      id="footer"
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/footer.png&quot;)"
+    >
+      <!-- Logo -->
+      <div class="footer__logo">
+        <img
+          src="recursos/logos/logo.png"
+          alt="Logo Programenso Studios"
+          class="footer__logo"
+        />
+      </div>
+
+      <!-- Contacto -->
+      <div class="footer__group">
+        <span class="footer__label">contacto</span>
+        <div class="footer__icons">
+          <a
+            href="https://wa.me/5579387815"
+            target="_blank"
+            aria-label="WhatsApp"
+          >
+            <img src="recursos/secciones/whats.png" alt="WhatsApp" />
+          </a>
+          <a href="mailto:contacto@programensostudios.com" aria-label="Email">
+            <img src="recursos/secciones/mail.png" alt="Email" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Síguenos -->
+      <div class="footer__group">
+        <span class="footer__label">síguenos</span>
+        <div class="footer__icons">
+          <a
+            href="https://www.instagram.com/programenso_studios/"
+            target="_blank"
+            aria-label="Instagram"
+          >
+            <img src="recursos/secciones/insta.png" alt="Instagram" />
+          </a>
+          <a
+            href="https://www.tiktok.com/@programenso"
+            target="_blank"
+            aria-label="TikTok"
+          >
+            <img src="recursos/secciones/tiktok.png" alt="TikTok" />
+          </a>
+          <a
+            href="https://www.linkedin.com/company/programenso-studios/"
+            target="_blank"
+            aria-label="Facebook"
+          >
+            <img src="recursos/secciones/face.png" alt="LinkedIn" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Mascota -->
+      <div class="footer__mascot">
+        <img src="recursos/secciones/poggy.png" alt="Mascota Programenso" />
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer__copy">
+        <p>© 2026 Programenso Studios. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
