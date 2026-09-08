@@ -389,13 +389,14 @@ section {
   width: 0%; height: 1.5px;
   background: var(--lime);
   transition: width 0.3s var(--ease);
+  
 }
 .nav__links a:not(.nav__cta):hover{ color: var(--white); }
 .nav__links a:not(.nav__cta):hover::after{ width: 100%; }
 .nav__cta{
   background: var(--lavender);
   color: var(--black) !important;
-  padding: 9px 20px;
+  padding: 10px 10px !important;
   border-radius: 999px;
   font-weight: 700;
   transition: background 0.25s var(--ease), transform 0.25s var(--ease);
@@ -979,12 +980,29 @@ section {
   --open: 0.5;
   position: relative;
   border-radius: 24px;
-  background-image: url(recursos/lockerBack.png);
+  /* Fondo del cajón: puedes cambiar la imagen de PC editando
+     --drawer-bg en el style inline de esta misma sección en el HTML.
+     lockerBack.png es el valor por defecto si no pones nada. */
+  background-image: var(--drawer-bg, url(recursos/lockerBack.png));
   background-size: cover;
 
   overflow: hidden;
   min-height: 420px;
   perspective: 1400px;
+}
+
+/* En mobile puedes poner una imagen DISTINTA de fondo para el cajón
+   con --drawer-bg-mobile en el mismo style inline, junto a --drawer-bg
+   (o en vez de). Si no defines --drawer-bg-mobile, cae de vuelta a la
+   de PC — nada se rompe si no la agregas.
+     <div class="team__drawer" style="
+       --drawer-bg: url('recursos/lockerBack.png');
+       --drawer-bg-mobile: url('recursos/lockerBackMobile.png');
+     "> */
+@media (max-width: 1180px){
+  .team__drawer{
+    background-image: var(--drawer-bg-mobile, var(--drawer-bg, url(recursos/lockerBack.png)));
+  }
 }
 
 /* Tapa del cajón: su apertura sigue el valor --open (0 = cerrado, 1 = abierto),
@@ -1287,8 +1305,17 @@ section {
   border: 1px solid rgba(255,255,255,0.14);
   background: linear-gradient(180deg, rgba(3, 3, 3, 0.722), rgba(0, 0, 0, 0.762));
   overflow: hidden;
-  min-height: 420px;
-  height: 100%;
+  /* Antes esto usaba height:100% para igualar la altura del cajón, pero
+     eso hacía que la proporción del panel (y por tanto de la foto)
+     cambiara según la pantalla, rompiendo el "zoom" a las caras.
+     Con aspect-ratio, el panel SIEMPRE mantiene la proporción real de
+     team3.png (1920x1080 = 16:9) sin importar el ancho de pantalla —
+     no es tamaño fijo, se sigue achicando/agrandando, solo que
+     manteniendo siempre la misma forma. align-self:start evita que el
+     grid intente estirarlo para igualar la altura del cajón. */
+  aspect-ratio: 16 / 9;
+  height: auto;
+  align-self: start;
 }
 
 /* Placeholder "Toca a alguien..." flota centrado ENCIMA de la foto,
@@ -1351,25 +1378,18 @@ section {
   font-style: italic;
 }
 
-@media (max-width: 900px){
+@media (max-width: 1600px){
+  /* Subido de 1180px a 1600px: a ese ancho, en una ventana NO maximizada
+     (laptops típicas de 1366/1440/1536px), el layout seguía en dos
+     columnas y la foto del equipo (con su 16:9 fijo) le tocaba muy poco
+     ancho de columna (0.8fr), así que se veía chiquita. Subiendo el
+     punto de quiebre, el cajón se apila ARRIBA y la foto pasa ABAJO
+     ocupando el 100% del ancho de la sección — se ve grande en casi
+     cualquier tamaño de ventana, y solo en pantallas realmente anchas
+     (>1600px) se queda el layout de dos columnas lado a lado. La
+     proporción real (16:9, definida arriba en .team__profile) sigue
+     aplicando siempre, nunca se deforma. */
   .team__layout{ grid-template-columns: 1fr; }
-  /* Antes esto era una altura fija (min-height:220px) sin importar el
-     ancho de pantalla, así que la PROPORCIÓN del panel (ancho x alto)
-     cambiaba según el celular — y como el "zoom" a cada cara está
-     calculado en % sobre la foto completa (team3.png) recortada con
-     object-fit:cover, un cambio de proporción hace que se recorte una
-     parte distinta de la foto y el zoom se vea desubicado.
-     Con aspect-ratio fijo, la proporción del panel es siempre la misma
-     sin importar el ancho del celular, así que el recorte (y el zoom)
-     se mantiene consistente. Si en tu foto real el zoom sigue viéndose
-     un poco desviado, ajusta este número (ancho/alto) hasta que
-     coincida mejor — por ejemplo 1/1 para más cuadrado, 3/4 para más
-     alto. */
-  .team__profile{
-    min-height: 0;
-    height: auto;
-    aspect-ratio: 4 / 3;
-  }
 }
 
 .team{
@@ -1910,6 +1930,45 @@ section.team#equipo {
 }
 
 /* ==========================================================================
+   NUNCA APLASTAR EL CUADRO DE INFO (showcase__caption) — PROPIOS Y MARCAS
+   ==========================================================================
+   El cuadro de texto normalmente vigilaba solo el ANCHO de pantalla
+   (@media max-width) para dejar de ser cuadrado (aspect-ratio:1/1) y
+   pasar a apilarse. El problema: en ventanas CUADRADAS o más ALTAS que
+   ANCHAS (ej. una ventana de escritorio angosta pero alta, o ciertas
+   tablets), el ancho podía seguir siendo mayor a 980px mientras la
+   ALTURA disponible era chica — el cuadro se quedaba forzado a
+   aspect-ratio:1/1 y el texto se recortaba (line-clamp) o se apretaba.
+
+   Esta regla vigila la PROPORCIÓN real de la ventana (ancho vs. alto),
+   no solo el ancho. Si la ventana es cuadrada o vertical
+   (max-aspect-ratio: 1/1 = alto igual o mayor que el ancho), se apila
+   el carrusel ANTES de que el cuadro tenga que forzarse a cuadrado.
+   Va al final del archivo para que gane sobre las reglas de arriba. */
+@media (max-aspect-ratio: 1/1){
+  .showcase__slide{
+    flex-direction: column;
+    padding-bottom: 4px;
+  }
+  .showcase__visual{
+    width: 100%;
+    align-self: stretch;
+  }
+  .showcase__caption{
+    aspect-ratio: auto !important;
+    width: 100%;
+    min-height: 260px;
+    height: auto;
+    margin-top: 22px;
+    align-self: auto;
+  }
+  .showcase__caption p{
+    -webkit-line-clamp: unset;
+    max-height: none;
+  }
+}
+
+/* ==========================================================================
    SERVICIOS — Cartas 3D & Modal Fullscreen Garantizado
    ========================================================================== */
 .services {
@@ -2216,6 +2275,16 @@ section.team#equipo {
   background-size: cover;       /* Cubre TODA la sección sin deformar */
   background-position: center;  /* Centra la imagen */
   background-repeat: no-repeat;
+}
+
+/* Igual que en las demás secciones: en mobile puedes poner un fondo
+   distinto agregando --bg-image-mobile en el style inline de la
+   sección <section class="drawer" id="drawer" style="...">. Si no lo
+   agregas, sigue usando el mismo --bg-image de siempre. */
+@media (max-width: 760px){
+  .drawer__clip {
+    background-image: var(--bg-image-mobile, var(--bg-image));
+  }
 }
 /* La "cajita" del cajón: su tamaño lo define drawer_back.png (el que
    está en flujo normal aquí abajo), con un pelín extra de ancho para
@@ -2526,7 +2595,7 @@ section.team#equipo {
 
 @media (max-width: 760px) {
 .photo-1, .photo-2, .photo-3, .photo-4, .photo-5, .photo-1_2, .photo-2_2, .photo-3_2, .photo-4_2, .photo-5_2, .photo-6_2 {
-    width: 40%;
+    width: 50%;
     height: auto;
   }
 }
@@ -2581,31 +2650,160 @@ section.team#equipo {
 
     .about-gallery .photo-1_2 {
     left: 8%;
+    top: 18%;
+    transform: rotate(-6deg);
+     width: 35% !important;
+  }
+
+  .about-gallery .photo-2_2 {
+    left: 33%;
+    top: 20%;
+    transform: rotate(5deg);
+    width: 23% !important;
+  }
+
+  .about-gallery .photo-3_2 {
+    left: 35%;
+    top: 9%;
+    transform: rotate(-4deg);
+    width: 25% !important;
+  }
+
+  .about-gallery .photo-4_2 {
+    left: 54%;
+    top: 15%;
+    
+    width: 30% !important;
+  }
+
+  .about-gallery   .photo-5_2 {
+    left: 55%;
+    top: 27%;
+    transform: rotate(-5deg);
+    width: 33% !important;
+  }
+
+  .about-gallery   .photo-6_2 {
+    left: 5%;
+    top: 40%;
+    transform: rotate(-5deg);
+    width: 50% !important;
+  }
+}
+
+/* ==========================================================================
+   TABLET / VENTANA INTERMEDIA — Posiciones manuales (about gallery y
+   "Apoya al Dev")
+   ==========================================================================
+   Antes NO existía un apartado para este rango: entre el mobile
+   (<=760px, ya con sus propias posiciones arriba) y el desktop
+   (>1180px, pensado para un lienzo de 1920px), las fotos seguían
+   usando las posiciones/tamaños de ESCRITORIO sobre un contenedor
+   mucho más angosto — por eso se veían encimadas, recortadas o
+   "raras" en tablets y en ventanas de navegador no maximizadas.
+
+   Este bloque es EXACTAMENTE el mismo sistema que ya usas en mobile:
+   acomoda cada foto a mano cambiando left/top (posición), width/height
+   (tamaño) y transform (inclinación). Es independiente de las
+   posiciones de desktop y de mobile — no las toca.
+
+   Rango: pantallas de 761px a 1180px de ancho.
+   ========================================================================== */
+@media (min-width: 761px) and (max-width: 1180px) {
+
+  /* La galería de "Nosotros" (ABOUT_US_FOTOS) — bajamos la altura fija
+     de 1080px (pensada para escritorio) a algo más acorde a este ancho,
+     para que no quede un espacio vacío enorme abajo. */
+  .about-gallery:not(#support) {
+    height: 760px;
+    min-height: 760px;
+  }
+
+  .about-gallery:not(#support) .photo-1 {
+    left: 6%;
+    top: 8%;
+    width: 34%;
+    height: auto;
+    transform: rotate(-6deg);
+  }
+
+  .about-gallery:not(#support) .photo-2 {
+    left: 58%;
     top: 4%;
+    width: 34%;
+    height: auto;
+    transform: rotate(5deg);
+  }
+
+  .about-gallery:not(#support) .photo-3 {
+    left: 30%;
+    top: 30%;
+    width: 38%;
+    height: auto;
+    transform: rotate(-4deg);
+  }
+
+  .about-gallery:not(#support) .photo-4 {
+    left: 4%;
+    top: 55%;
+    width: 34%;
+    height: auto;
+    transform: rotate(7deg);
+  }
+
+  .about-gallery:not(#support) .photo-5 {
+    left: 62%;
+    top: 58%;
+    width: 30%;
+    height: auto;
+    transform: rotate(-6deg);
+  }
+
+  /* La galería de "Apoya al Dev" (id="support") — mismo criterio,
+     tamaños en % en vez de px fijos para que no se encimen. */
+  .about-gallery .photo-1_2 {
+    left:10%;
+    top: 38%;
+    width: 24%;
+    height: auto;
     transform: rotate(-6deg);
   }
 
   .about-gallery .photo-2_2 {
-    left: 55%;
-    top: 6%;
-    transform: rotate(5deg);
+    left: 27%;
+    top: 23%;
+    width: 18%;
+    height: auto;
+    transform: rotate(-6deg);
   }
 
   .about-gallery .photo-3_2 {
-    left: 8%;
-    top: 36%;
-    transform: rotate(-4deg);
+    left: 45%;
+    top: 25%;
+    width: 20%;
+    height: auto;
+    transform: rotate(-6deg);
   }
 
   .about-gallery .photo-4_2 {
-    left: 55%;
-    top: 38%;
-    transform: rotate(6deg);
+    left: 35%;
+    top: 40%;
+    height: auto;
+    width: 23%;
   }
 
-  .about-gallery   .photo-5_2 {
-    left: 28%;
-    top: 68%;
-    transform: rotate(-5deg);
+  .about-gallery .photo-5_2 {
+    left: 30%;
+    top: 58%;
+    width: 28%;
+    height: auto;
+    transform: rotate(-6deg);
+  }
+
+  .about-gallery .photo-6_2 {
+    left: 60%;
+    top: 38%;
+    width: 34%;
+    height: auto;
   }
 }

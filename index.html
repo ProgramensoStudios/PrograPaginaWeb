@@ -30,9 +30,8 @@
     <!-- NAV -->
     <header class="nav" id="nav">
       <a href="#hero" class="nav__logo"
-        ><img src="recursos//logos/iso.png" width="50" alt="Isotipo ProgramensoStudios Logo" /><span
-          >•</span
-        ></a
+        ><img src="recursos//logos/iso.png" width="50" alt="Isotipo ProgramensoStudios Logo" />
+        </a
       >
       <nav class="nav__links" id="navLinks">
         <a href="#about">Nosotros</a>
@@ -42,7 +41,7 @@
         <a href="#servicios">Servicios</a>
         <a href="#drawer">Próximamente</a>
         <a href="#support">Apoya al Estudio</a>
-        <a href="#footer" class="nav__cta">Contáctanos</a>
+        <a href="#footer" class="nav__cta">  Contáctanos  </a>
       </nav>
       <button
         class="nav__burger"
@@ -111,7 +110,8 @@
       class="about bg-fullwidth"
       id="about"
       data-bg
-      style="--bg-image: url(&quot;recursos/secciones/ABOUT_US.png&quot;)"
+      style="--bg-image: url(&quot;recursos/secciones/ABOUT_US.png&quot;);
+      --bg-image-mobile: url(&quot;recursos/secciones/ABOUT_US-CEL.png&quot;)"
     >
       <div class="hero__block black" aria-hidden="true">
         <div class="about__text reveal-right">
@@ -138,7 +138,8 @@
     <section
       class="hero about-gallery"
       data-bg
-      style="--bg-image: url(&quot;recursos/secciones/ABOUT_US_FOTOS.png&quot;)"
+      style="--bg-image: url(&quot;recursos/secciones/ABOUT_US_FOTOS.png&quot;);
+      --bg-image-mobile: url(&quot;recursos/secciones/ABOUT_GALLERY-CEL.png&quot;)"
     >
       <div class="about-gallery__photos">
         <div class="about-gallery__photo photo-1">
@@ -805,7 +806,7 @@
           <dialog
             class="service-modal"
             data-service-modal
-            style="--bg-img: url(&quot;recursos/secciones/servicio-next.png&quot;)"
+            style="--bg-img: url(&quot;recursos/secciones/SERVICIO-DIGITAL.png&quot;)"
           >
             <button
               type="button"
@@ -862,7 +863,7 @@
           <dialog
             class="service-modal"
             data-service-modal
-            style="--bg-img: url(&quot;recursos/secciones/servicios-next.png&quot;)"
+            style="--bg-img: url(&quot;recursos/secciones/SERVICIO-presencial.png&quot;)"
           >
             <button
               type="button"
@@ -969,7 +970,7 @@
           <dialog
             class="service-modal"
             data-service-modal
-            style="--bg-img: url(&quot;recursos/secciones/servicios-next.png&quot;)"
+            style="--bg-img: url(&quot;recursos/secciones/SERVICIO-CORPORATIVO.png&quot;)"
           >
             <button
               type="button"
@@ -1030,7 +1031,7 @@
           <dialog
             class="service-modal"
             data-service-modal
-            style="--bg-img: url(&quot;recursos/secciones/servicios-next.png&quot;)"
+            style="--bg-img: url(&quot;recursos/secciones/SERVICIO-INFLUENCER.png&quot;)"
           >
             <button
               type="button"
@@ -1098,30 +1099,41 @@
       <div class="drawer__clip">
         <div class="drawer__stage">
           <!-- Front: se queda quieto, y su tamaño real define el tamaño de la cajita -->
-          <!-- ↓ Cambia esta ruta por donde tengas tu drawer_front.png -->
-          <img
-            class="drawer__back"
-            src="recursos/secciones/drawer_front.png"
-            alt=""
-            aria-hidden="true"
-          />
-
-          <!-- Back: baja desde arriba, EXACTO del mismo tamaño que el front.
-           Ahora es un wrapper (no solo la imagen) para que el countdown
-           viva DENTRO y baje pegado a la imagen, como si estuviera
-           impreso en el cajón. -->
-          <!-- ↓ Cambia esta ruta por donde tengas tu drawer_back.png -->
-          <div
-            class="drawer__panel"
-            id="drawerPanel"
-            style="width: 85%; height: 85%"
-          >
+          <!-- ↓ Cambia esta ruta por donde tengas tu drawer_front.png.
+           Para poner una imagen DISTINTA en mobile, descomenta el
+           <source> de abajo y pon ahí tu ruta. -->
+          <picture>
+            <source
+              media="(max-width: 760px)"
+              srcset="recursos/secciones/drawer_front_mobile.png"
+            />
             <img
-              class="drawer__panel-img"
-              src="recursos/secciones/drawer_back.png"
+              class="drawer__back"
+              src="recursos/secciones/drawer_front.png"
               alt=""
               aria-hidden="true"
             />
+          </picture>
+
+          <div
+            class="drawer__panel"
+            id="drawerPanel"
+            style="width: 100%; height:100%"
+          >
+            <!-- Para poner una imagen DISTINTA en mobile, descomenta el
+             <source> de abajo y pon ahí tu ruta. -->
+            <picture>
+              <source
+                media="(max-width: 760px)"
+                srcset="recursos/secciones/drawer_back_mobile.png"
+              />
+              <img
+                class="drawer__panel-img"
+                src="recursos/secciones/drawer_back.png"
+                alt=""
+                aria-hidden="true"
+              />
+            </picture>
 
             <!-- Countdown: pegado a la imagen del cajón, baja/sube CON ella -->
             <div
@@ -1160,11 +1172,13 @@
       </div>
     </section>
 
+
     <!-- ============ Support ============ -->
     <section
       class="hero about-gallery"
       data-bg
-      style="--bg-image: url(&quot;recursos/secciones/APOYANOS.png&quot;)"
+      style="--bg-image: url(&quot;recursos/secciones/APOYANOS.png&quot;);
+      --bg-image-mobile: url(&quot;recursos/secciones/APOYA-CEL.png&quot;)"
       id="support"
     >
       <div class="about-gallery__photos">
