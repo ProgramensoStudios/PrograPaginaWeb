@@ -1713,11 +1713,7 @@ section.team#equipo {
   font-size: clamp(11px, 1.2vw, 15px);
   font-weight: 700;
   color: var(--charcoal);
-  background: var(--lime);
-  padding: 4px 18px;
-  border-radius: 100px;
-  text-transform: lowercase;
-  letter-spacing: 0.02em;
+  transform: translateX(100px);
 }
 
 .footer__icons {
@@ -2458,4 +2454,11 @@ section.team#equipo {
   top: 15%;
 
   
+}
+
+@media (max-width: 760px) {
+.photo-1, .photo-2, .photo-3, .photo-4, .photo-5, .photo-1_2, .photo-2_2, .photo-3_2, .photo-4_2, .photo-5_2, .photo-6_2 {
+    width: 30%;
+    height: auto;
+  }
 }
