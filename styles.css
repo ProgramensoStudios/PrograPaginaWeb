@@ -138,36 +138,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 /* ==========================================================================
-   Fondo único en mobile — en vez de que cada sección cargue/muestre su
-   propia imagen (como en desktop), en pantallas angostas se usa UNA sola
-   imagen fija detrás de todo el sitio. En desktop esto no aplica: cada
-   sección conserva su fondo y proporciones normales.
-
-   Para cambiar la imagen, solo edita la variable --bg-image-mobile-global
-   que está en el <body> del HTML.
+   (Antes aquí había un fondo ÚNICO global para mobile que tapaba el de
+   cada sección. Se quitó: ahora en mobile cada sección usa su propio
+   fondo, igual que en desktop — ver el bloque de arriba con
+   --bg-image-mobile. Si una sección no tiene --bg-image-mobile propia,
+   automáticamente usa su --bg-image de escritorio (no queda sin fondo).
    ========================================================================== */
-@media (max-width: 760px) {
-  body::before {
-    content: "";
-    position: absolute; /* Cambiado a fixed para que cubra toda la pantalla al scroll */
-    top: 0;
-    left: 0;
-    width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
-    height: 100%; /* Asegura que cubra el alto visible del dispositivo */
-    z-index: -3;
-    background-image: var(--bg-image-mobile-global, none);
-    background-size: 100% auto; /* Ajusta el ancho exacto al 100% y escala el alto proporcionalmente */
-    background-position: center top;
-    background-repeat: no-repeat;
-  }
-
-  /* Apagamos el fondo propio de cada sección (incluida la variante
-     bf-front del marco decorativo de "marcas") para que se vea solo
-     el fondo único de arriba a través de todas las secciones. */
-  [data-bg]::before{
-    background-image: none !important;
-  }
-}
 /* Degradado oscuro encima de la foto para que el texto siga siendo legible */
 [data-bg]::after{
   content: "";
@@ -1377,7 +1353,23 @@ section {
 
 @media (max-width: 900px){
   .team__layout{ grid-template-columns: 1fr; }
-  .team__profile{ min-height: 220px; }
+  /* Antes esto era una altura fija (min-height:220px) sin importar el
+     ancho de pantalla, así que la PROPORCIÓN del panel (ancho x alto)
+     cambiaba según el celular — y como el "zoom" a cada cara está
+     calculado en % sobre la foto completa (team3.png) recortada con
+     object-fit:cover, un cambio de proporción hace que se recorte una
+     parte distinta de la foto y el zoom se vea desubicado.
+     Con aspect-ratio fijo, la proporción del panel es siempre la misma
+     sin importar el ancho del celular, así que el recorte (y el zoom)
+     se mantiene consistente. Si en tu foto real el zoom sigue viéndose
+     un poco desviado, ajusta este número (ancho/alto) hasta que
+     coincida mejor — por ejemplo 1/1 para más cuadrado, 3/4 para más
+     alto. */
+  .team__profile{
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .team{
@@ -1773,18 +1765,47 @@ section.team#equipo {
   border-top: 1px solid rgba(255,255,255,0.08);
 }
 
-/* Mobile */
+/* Mobile — antes usaba grid con ".footer__logo-wrap", una clase que no
+   existe en el HTML (el logo usa ".footer__logo"), por eso el orden
+   salía mal / amontonado. Ahora es una sola columna que respeta el
+   orden real del HTML: logo → contacto → síguenos → mascota → copyright. */
 @media (max-width: 680px) {
   .footer {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    gap: 24px;
+    padding: 32px clamp(20px, 8vw, 40px);
   }
 
-  .footer__logo-wrap { grid-column: 1 / -1; }
-  .footer__mascot    { grid-column: 1 / -1; grid-row: 3; }
-  .footer__copy      { grid-column: 1 / -1; grid-row: 4; }
+  .footer__label {
+    display: block;
+    width: 100%;
+    text-align: center;
+    transform: none;
+  }
+
+  /* Las imágenes de "Contacto" / "Síguenos" traen width:50% puesto
+     directo en el HTML (inline), calculado sobre un contenedor que no
+     queda centrado — por eso se veían pegadas a la izquierda. Con
+     !important forzamos un ancho fijo y las centramos con margin:auto. */
+  .footer__label img {
+    width: auto !important;
+    max-width: 160px !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .footer__mascot img {
+    height: clamp(70px, 22vw, 110px);
+  }
+
+  .footer__copy {
+    width: 100%;
+  }
 }
 
 /* ==========================================================================
@@ -1916,6 +1937,61 @@ section.team#equipo {
   perspective: 1000px;
 }
 
+/* Mobile: 2 cartas por fila en vez de 1 sola columna. Achicamos también
+   la carta y su contenido para que quepan bien en 2 columnas angostas. */
+@media (max-width: 760px) {
+  .services {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .services__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    perspective: none;
+  }
+  .service-card {
+    height: 260px;
+  }
+  .service-card__inner {
+    /* En PC las cartas están inclinadas en 3D (rotateY); en pantallas
+       angostas eso hace que la carta de la derecha "se proyecte" fuera
+       de la pantalla aunque su tamaño sea correcto. Las dejamos planas
+       (sin inclinación) solo en mobile. */
+    transform: none !important;
+  }
+  .service-card:hover .service-card__inner,
+  .service-card:active .service-card__inner {
+    transform: scale(1.02) !important;
+  }
+  .service-card__face {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .service-card__badge {
+    font-size: 1.1rem;
+  }
+  .service-card__face h3 {
+    font-size: 1rem;
+    margin: 8px 0;
+  }
+  .service-card__hint {
+    font-size: 0.6rem;
+  }
+}
+
+/* Pantallas muy angostas: mismas 2 columnas pero un poco más compactas */
+@media (max-width: 400px) {
+  .services__grid {
+    gap: 8px;
+  }
+  .service-card {
+    height: 220px;
+  }
+  .service-card__face {
+    padding: 12px;
+  }
+}
+
 .service-card {
   height: 400px;
   cursor: pointer;
@@ -2003,7 +2079,6 @@ section.team#equipo {
 
   /* EFECTO GHOST CRISTALINO + FOTO DINÁMICA */
   background-image: 
-    linear-gradient(rgba(20, 3, 3, 0.6), rgba(1, 0, 0, 0.7)), 
     var(--bg-img);
   
   background-size: cover;
@@ -2234,13 +2309,6 @@ section.team#equipo {
   gap: clamp(8px, 1.6vw, 22px);
 }
 
-@media (max-width: 760px) {
-  .about + .hero {
-    display: none;
-  }
-}
-
-
 /* ==========================================================================
    ABOUT GALLERY — Fotos superpuestas sobre about_us_fotos.png
    ========================================================================== */
@@ -2458,7 +2526,86 @@ section.team#equipo {
 
 @media (max-width: 760px) {
 .photo-1, .photo-2, .photo-3, .photo-4, .photo-5, .photo-1_2, .photo-2_2, .photo-3_2, .photo-4_2, .photo-5_2, .photo-6_2 {
-    width: 30%;
+    width: 40%;
     height: auto;
+  }
+}
+
+/* ==========================================================================
+   MOBILE — Posiciones de las fotos de "Nosotros" (ABOUT_US_FOTOS)
+   ==========================================================================
+   Esta sección venía OCULTA en mobile (display:none). Ya se activó arriba.
+   Aquí acomodamos cada foto SOLO para mobile (":not(#support)" hace que
+   esto NO afecte la galería de "Apoya al Dev", que ya se ve bien).
+
+   Para acomodar cada foto a tu gusto, solo cambia left/top (posición) y,
+   si quieres, transform (inclinación) de cada .photo-N de aquí abajo.
+   Esto es independiente de las posiciones de escritorio (arriba en el
+   archivo) — no las toca.
+   ========================================================================== */
+@media (max-width: 760px) {
+  .about-gallery:not(#support) {
+    height: 620px;
+    min-height: 620px;
+  }
+
+  .about-gallery:not(#support) .photo-1 {
+    left: 8%;
+    top: 4%;
+    transform: rotate(-6deg);
+  }
+
+  .about-gallery:not(#support) .photo-2 {
+    left: 55%;
+    top: 6%;
+    transform: rotate(5deg);
+  }
+
+  .about-gallery:not(#support) .photo-3 {
+    left: 8%;
+    top: 36%;
+    transform: rotate(-4deg);
+  }
+
+  .about-gallery:not(#support) .photo-4 {
+    left: 55%;
+    top: 48%;
+    transform: rotate(6deg);
+  }
+
+  .about-gallery:not(#support) .photo-5 {
+    left: 28%;
+    top: 68%;
+    transform: rotate(-5deg);
+  }
+
+    .about-gallery .photo-1_2 {
+    left: 8%;
+    top: 4%;
+    transform: rotate(-6deg);
+  }
+
+  .about-gallery .photo-2_2 {
+    left: 55%;
+    top: 6%;
+    transform: rotate(5deg);
+  }
+
+  .about-gallery .photo-3_2 {
+    left: 8%;
+    top: 36%;
+    transform: rotate(-4deg);
+  }
+
+  .about-gallery .photo-4_2 {
+    left: 55%;
+    top: 38%;
+    transform: rotate(6deg);
+  }
+
+  .about-gallery   .photo-5_2 {
+    left: 28%;
+    top: 68%;
+    transform: rotate(-5deg);
   }
 }
