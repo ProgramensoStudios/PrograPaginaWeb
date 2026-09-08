@@ -526,6 +526,14 @@ section {
   background-color: #9ddf49;
 }
 
+.ghost{
+    color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.486);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
 .hero__block--ghost {
   position: relative;
   z-index: 1;
