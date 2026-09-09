@@ -536,11 +536,14 @@ section {
 
 .hero__logo{
   position: relative;
-  width: clamp(450px, 65vw, 500px);
+  width: clamp(200px, 80vw, 500px); /* 👈 nunca más ancho que la pantalla */
+  max-width: 100%;
   margin: 0 auto 22px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 .hero__logo img{
   position: relative;
@@ -659,6 +662,8 @@ section {
   gap: clamp(20px, 4vw, 44px);
   margin-top: 34px;
   flex-wrap: wrap;
+  justify-content: center; /* 👈 centrado siempre */
+  text-align: center;
 }
 .about__stats strong{
   display: block;
@@ -2000,55 +2005,71 @@ section.team#equipo {
    la carta y su contenido para que quepan bien en 2 columnas angostas. */
 @media (max-width: 760px) {
   .services {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
+
+  /* Grid: 1 columna, tarjetas horizontales skinny — 2 caben en pantalla */
   .services__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: 1fr; /* 👈 1 col, cada tarjeta ocupa todo el ancho */
+    gap: 10px;
     perspective: none;
   }
+
+  /* Tarjeta horizontal y skinny — ~42vh para que quepan 2 en pantalla */
   .service-card {
-    height: 260px;
+    height: clamp(130px, 22vh, 180px); /* 👈 skinny en vertical */
   }
+
   .service-card__inner {
-    /* En PC las cartas están inclinadas en 3D (rotateY); en pantallas
-       angostas eso hace que la carta de la derecha "se proyecte" fuera
-       de la pantalla aunque su tamaño sea correcto. Las dejamos planas
-       (sin inclinación) solo en mobile. */
     transform: none !important;
-  }
-  .service-card:hover .service-card__inner,
-  .service-card:active .service-card__inner {
-    transform: scale(1.02) !important;
-  }
-  .service-card__face {
-    padding: 16px;
     border-radius: 14px;
   }
-  .service-card__badge {
-    font-size: 1.1rem;
+
+  /* Face horizontal: badge + título en fila */
+  .service-card__face {
+    padding: 14px 18px;
+    border-radius: 14px;
+    flex-direction: row;        /* 👈 horizontal */
+    align-items: center;
+    gap: 14px;
+    text-align: left;
   }
+
+  .service-card__face--front {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .service-card__badge {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin: 0;
+  }
+
   .service-card__face h3 {
     font-size: 1rem;
-    margin: 8px 0;
+    margin: 0 0 4px;
+    line-height: 1.2;
   }
+
   .service-card__hint {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
+    margin: 0;
+  }
+
+  .service-card:hover .service-card__inner,
+  .service-card:active .service-card__inner {
+    transform: scale(1.01) !important;
   }
 }
 
-/* Pantallas muy angostas: mismas 2 columnas pero un poco más compactas */
 @media (max-width: 400px) {
-  .services__grid {
-    gap: 8px;
-  }
-  .service-card {
-    height: 220px;
-  }
-  .service-card__face {
-    padding: 12px;
-  }
+  .services__grid { gap: 8px; }
+  .service-card   { height: clamp(110px, 20vh, 150px); }
+  .service-card__face { padding: 10px 14px; }
 }
 
 .service-card {
