@@ -158,6 +158,7 @@
       rel="stylesheet"
     />
 
+    <link rel="preload" href="styles.css" as="style" fetchpriority="high" />
     <link rel="stylesheet" href="styles.css" />
 
     <!-- model-viewer: renderiza objetos 3D en formato .glb/.gltf directo en HTML -->
@@ -275,7 +276,7 @@
         --bg-image-mobile: url(&quot;recursos/secciones/WELCOME-CEL.png&quot;);
       "
     >
-      <div class="hero__bg" id="heroBg" aria-hidden="true"></div>
+      <div class="hero__bg" aria-hidden="true"></div>
 
       <div class="hero__content">
         <div class="hero__block hero__block--ghost">
@@ -303,6 +304,22 @@
         <span>Scroll</span>
         <div class="hero__scroll-line"></div>
       </div>
+
+      <button
+        type="button"
+        class="release-key-marker release-key-marker--hero"
+        data-release-key="1"
+        aria-label="Encontrar primera llave del release"
+      >
+        <span class="release-key-marker__inner">
+          <span class="release-key-marker__face release-key-marker__face--front"></span>
+          <span
+            class="release-key-marker__face release-key-marker__face--back"
+            data-key-back
+            ></span
+          >
+        </span>
+      </button>
     </section>
 
     <!-- ============ ABOUT ============ -->
@@ -596,7 +613,7 @@
       class="work work--personal"
       data-bg=""
       id="propios"
-      style="--bg-image: url(&quot;recursos/fondos/PROPIOS.jpg&quot;)"
+      style="--bg-image: url(&quot;recursos/secciones/PROPIOS.png&quot;)"
     >
       <div
         class="showcase showcase--personal bf-front"
@@ -730,6 +747,25 @@
                     Juego inmersivo de VR donde enfrentas oleadas robóticas
                     espaciales. Demostración de capacidades técnicas VR.
                   </p>
+
+                  <button
+                    type="button"
+                    class="release-key-marker release-key-marker--team"
+                    data-release-key="2"
+                    aria-label="Encontrar segunda llave del release"
+                  >
+                    <span class="release-key-marker__inner">
+                      <span
+                        class="release-key-marker__face release-key-marker__face--front"
+                        ></span
+                      >
+                      <span
+                        class="release-key-marker__face release-key-marker__face--back"
+                        data-key-back
+                        ></span
+                      >
+                    </span>
+                  </button>
                 </div>
               </article>
               <article class="showcase__slide">
@@ -1022,6 +1058,24 @@
           Selecciona una carta para explorar nuestros servicios de advergaming y
           desarrollo de videojuegos.
         </p>
+        <button
+          type="button"
+          class="release-key-marker release-key-marker--services"
+          data-release-key="3"
+          aria-label="Encontrar tercera llave del release"
+        >
+          <span class="release-key-marker__inner">
+            <span
+              class="release-key-marker__face release-key-marker__face--front"
+              ></span
+            >
+            <span
+              class="release-key-marker__face release-key-marker__face--back"
+              data-key-back
+              ></span
+            >
+          </span>
+        </button>
       </div>
 
       <div class="services__grid">
@@ -1395,27 +1449,119 @@
                 <p class="drawer__countdown-eyebrow">
                   — NUEVO PROYECTO EN CAMINO
                 </p>
-                <p class="drawer__countdown-date">13 de septiembre</p>
-                <div class="countdown" id="countdown">
-                  <div class="countdown__unit">
-                    <span class="countdown__num" id="cd-days">00</span>
-                    <span class="countdown__label">Días</span>
-                  </div>
-                  <div class="countdown__sep">:</div>
-                  <div class="countdown__unit">
-                    <span class="countdown__num" id="cd-hours">00</span>
-                    <span class="countdown__label">Horas</span>
-                  </div>
-                  <div class="countdown__sep">:</div>
-                  <div class="countdown__unit">
-                    <span class="countdown__num" id="cd-min">00</span>
-                    <span class="countdown__label">Min</span>
-                  </div>
-                  <div class="countdown__sep">:</div>
-                  <div class="countdown__unit">
-                    <span class="countdown__num" id="cd-sec">00</span>
-                    <span class="countdown__label">Seg</span>
-                  </div>
+                <p class="drawer__countdown-date">Próximamente</p>
+                <p class="drawer__key-status" id="drawerKeyStatus">
+                  Encuentra las 3 llaves para desbloquear
+                </p>
+                <div
+                  class="drawer__keys"
+                  id="drawerKeys"
+                  aria-label="Código recuperado"
+                >
+                  <span class="drawer__key" data-release-key-indicator="1">
+                    <span class="drawer__key-inner">
+                      <span class="drawer__key-face drawer__key-face--front"
+                        ></span
+                      >
+                      <span
+                        class="drawer__key-face drawer__key-face--back"
+                        data-key-back
+                        ></span
+                      >
+                    </span>
+                  </span>
+                  <span class="drawer__key" data-release-key-indicator="2">
+                    <span class="drawer__key-inner">
+                      <span class="drawer__key-face drawer__key-face--front"
+                        ></span
+                      >
+                      <span
+                        class="drawer__key-face drawer__key-face--back"
+                        data-key-back
+                        ></span
+                      >
+                    </span>
+                  </span>
+                  <span class="drawer__key" data-release-key-indicator="3">
+                    <span class="drawer__key-inner">
+                      <span class="drawer__key-face drawer__key-face--front"
+                        ></span
+                      >
+                      <span
+                        class="drawer__key-face drawer__key-face--back"
+                        data-key-back
+                        ></span
+                      >
+                    </span>
+                  </span>
+                </div>
+                <p class="drawer__code-hint" id="drawerCodeHint">
+                  Fragmentos recuperados: __ · __ · __
+                </p>
+                <label class="drawer__code-label" for="drawerSecretCode">
+                  Introduce el código secreto
+                </label>
+                <div class="drawer__code-entry">
+                  <input
+                    id="drawerSecretCode"
+                    type="text"
+                    maxlength="6"
+                    placeholder="_ _ _ _ _ _"
+                    autocomplete="off"
+                    spellcheck="false"
+                    disabled
+                  />
+                  <button type="button" id="drawerCodeButton" disabled>
+                    Validar
+                  </button>
+                </div>
+                <p
+                  class="drawer__code-feedback"
+                  id="drawerCodeFeedback"
+                  role="status"
+                ></p>
+                <button
+                  type="button"
+                  class="drawer__reveal-button"
+                  id="drawerRevealButton"
+                  aria-expanded="false"
+                  aria-controls="drawerVideo"
+                  disabled
+                >
+                  3 llaves requeridas
+                </button>
+              </div>
+            </div>
+
+            <div class="drawer__reveal-overlay" id="drawerRevealOverlay">
+              <div class="drawer__reveal-panel">
+                <div class="drawer__video-shell" id="drawerVideoShell">
+                  <p class="drawer__release-kicker">
+                    Próximamente · App Store - Google Play
+                  </p>
+                  <button
+                    type="button"
+                    class="drawer__close-button"
+                    id="drawerCloseButton"
+                    aria-label="Cerrar release"
+                  >
+                    ✕
+                  </button>
+
+                  <video
+                    class="drawer__video"
+                    id="drawerVideo"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    poster="recursos/secciones/publicidad_poster.png"
+                  >
+                    <source
+                      src="recursos/videos/PC_Publicidad_MP4.mp4"
+                      type="video/mp4"
+                    />
+                  </video>
                 </div>
               </div>
             </div>

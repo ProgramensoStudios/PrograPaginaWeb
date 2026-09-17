@@ -20,23 +20,6 @@
   window.addEventListener("resize", setViewportWidthVar);
   window.addEventListener("load", setViewportWidthVar);
 
-  /* ---------- Fondos por sección: igualar la altura de la sección
-     a la proporción real de su imagen (ancho/alto de archivo) ---------- */
-  document.querySelectorAll("[data-bg]").forEach((section) => {
-    const src = section.dataset.bgSrc;
-    if (!src) return;
-    const probe = new Image();
-    probe.onload = () => {
-      if (probe.naturalWidth && probe.naturalHeight) {
-        section.style.setProperty(
-          "--bg-ratio",
-          `${probe.naturalWidth} / ${probe.naturalHeight}`,
-        );
-      }
-    };
-    probe.src = src;
-  });
-
   /* ---------- NAV: solid on scroll + mobile menu ---------- */
   const nav = document.getElementById("nav");
   const burger = document.getElementById("burger");
@@ -84,58 +67,6 @@
     revealEls.forEach((el) => io.observe(el));
   } else {
     revealEls.forEach((el) => el.classList.add("is-visible"));
-  }
-
-  /* ---------- Countdown to Sept 13 ---------- */
-  const els = {
-    days: document.getElementById("cd-days"),
-    hours: document.getElementById("cd-hours"),
-    min: document.getElementById("cd-min"),
-    sec: document.getElementById("cd-sec"),
-  };
-
-  function getTargetDate() {
-    const now = new Date();
-    let year = now.getFullYear();
-    let target = new Date(year, 8, 13, 0, 0, 0); // month 8 = septiembre
-    if (target.getTime() < now.getTime()) {
-      target = new Date(year + 1, 8, 13, 0, 0, 0);
-    }
-    return target;
-  }
-
-  const targetDate = getTargetDate();
-
-  function pad(n) {
-    return String(n).padStart(2, "0");
-  }
-
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const diff = targetDate.getTime() - now;
-
-    if (diff <= 0) {
-      els.days.textContent = "00";
-      els.hours.textContent = "00";
-      els.min.textContent = "00";
-      els.sec.textContent = "00";
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    if (els.days) els.days.textContent = pad(days);
-    if (els.hours) els.hours.textContent = pad(hours);
-    if (els.min) els.min.textContent = pad(minutes);
-    if (els.sec) els.sec.textContent = pad(seconds);
-  }
-
-  if (els.days) {
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
   }
 
   /* ---------- Equipo: cajón ligado al scroll ---------- */
@@ -360,7 +291,6 @@
   serviceCards.forEach((card) => {
     const modal = card.querySelector("[data-service-modal]");
     const closeBtn = modal?.querySelector(".service-modal__close");
-    const closeCta = modal?.querySelector("[data-close-modal]");
 
     // Abrir modal Fullscreen nativo al hacer click en la carta
     card.addEventListener("click", () => {
@@ -384,11 +314,6 @@
       closeModal();
     });
 
-    // Clic en el botón CTA dentro del modal (Cierra y te lleva a #contacto)
-    closeCta?.addEventListener("click", () => {
-      closeModal();
-    });
-
     // Cerrar al dar click fuera del contenido (en el fondo translúcido)
     modal?.addEventListener("click", (e) => {
       const rect = modal.getBoundingClientRect();
@@ -409,14 +334,6 @@
     });
   });
 
-  // Cerrar carta al presionar la tecla Escape
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      serviceCards.forEach((c) => c.classList.remove("is-expanded"));
-      document.body.style.overflow = "";
-    }
-  });
-
   /* ---------- Showcase carousel (marcas / propios) ---------- */
   document.querySelectorAll("[data-showcase]").forEach((root) => {
     const track = root.querySelector(".showcase__track");
@@ -425,6 +342,7 @@
     const prevBtn = root.querySelector("[data-prev]");
     const nextBtn = root.querySelector("[data-next]");
     const dotsWrap = root.querySelector("[data-dots]");
+    const videos = bgs.map((bg) => bg.querySelector("video"));
     if (!track || slides.length === 0) return;
 
     let index = 0;
@@ -445,7 +363,17 @@
     function goTo(i, isManual) {
       index = (i + slides.length) % slides.length;
       track.style.transform = `translateX(-${index * 100}%)`;
-      bgs.forEach((bg, bi) => bg.classList.toggle("is-active", bi === index));
+      bgs.forEach((bg, bi) => {
+        const isActive = bi === index;
+        bg.classList.toggle("is-active", isActive);
+        const video = videos[bi];
+        if (!video) return;
+        if (isActive) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
       dots.forEach((d, di) => d.classList.toggle("is-active", di === index));
 
       // Si el cambio fue manual (flechitas, puntos o swipe), reinicia el
@@ -502,263 +430,166 @@
     restartAutoplay();
   });
 
-  /* ---------- PHRASE: tina de pelotas interactiva (canvas + física simple) ---------- */
-  const pit = document.getElementById("phrasePit");
-  const canvas = document.getElementById("ballPitCanvas");
-
-  if (pit && canvas) {
-    const ctx = canvas.getContext("2d");
-    const COLORS = ["#8c82f5", "#9ddf49", "#3c1b72", "#ffffff", "#c9c2ff"];
-    const GRAVITY = 0.45;
-    const FRICTION = 0.985; // resistencia del aire
-    const WALL_BOUNCE = 0.7; // energía que conserva al chocar con paredes/piso
-    const BALL_BOUNCE = 0.9; // energía que conserva entre pelotas
-    const MOUSE_RADIUS = 110;
-    const MOUSE_FORCE = 2.6;
-
-    let width = 0;
-    let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let balls = [];
-    let raf = null;
-
-    const mouse = { x: -9999, y: -9999, active: false };
-
-    function rand(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    function buildBalls() {
-      const area = width * height;
-      // densidad pensada para que se vea "llena" sin ser excesiva en móvil
-      const count = Math.max(16, Math.min(46, Math.round(area / 9000)));
-      balls = [];
-      for (let i = 0; i < count; i++) {
-        const r = rand(16, 34);
-        balls.push({
-          x: rand(r, width - r),
-          y: rand(-height, height * 0.6),
-          vx: rand(-1, 1),
-          vy: 0,
-          r,
-          color: COLORS[i % COLORS.length],
-        });
-      }
-    }
-
-    function resize() {
-      const rect = pit.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      buildBalls();
-    }
-
-    function resolveBallCollision(a, b) {
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const dist = Math.hypot(dx, dy) || 0.0001;
-      const overlap = a.r + b.r - dist;
-      if (overlap <= 0) return;
-
-      const nx = dx / dist;
-      const ny = dy / dist;
-
-      // separar para que no se encimen
-      const push = overlap / 2;
-      a.x -= nx * push;
-      a.y -= ny * push;
-      b.x += nx * push;
-      b.y += ny * push;
-
-      // impulso elástico simple (masas ~ proporcionales al radio)
-      const ma = a.r;
-      const mb = b.r;
-      const rvx = b.vx - a.vx;
-      const rvy = b.vy - a.vy;
-      const velAlongNormal = rvx * nx + rvy * ny;
-      if (velAlongNormal > 0) return; // ya se están separando
-
-      const restitution = BALL_BOUNCE;
-      const impulse = (-(1 + restitution) * velAlongNormal) / (1 / ma + 1 / mb);
-      const ix = impulse * nx;
-      const iy = impulse * ny;
-      a.vx -= ix / ma;
-      a.vy -= iy / ma;
-      b.vx += ix / mb;
-      b.vy += iy / mb;
-    }
-
-    function step() {
-      for (const ball of balls) {
-        // gravedad + fricción del aire
-        ball.vy += GRAVITY;
-        ball.vx *= FRICTION;
-        ball.vy *= FRICTION;
-
-        // repulsión del mouse: entre más cerca, más fuerte se empujan
-        if (mouse.active) {
-          const dx = ball.x - mouse.x;
-          const dy = ball.y - mouse.y;
-          const dist = Math.hypot(dx, dy);
-          const minDist = MOUSE_RADIUS + ball.r;
-          if (dist < minDist && dist > 0.001) {
-            const force = ((minDist - dist) / minDist) * MOUSE_FORCE;
-            ball.vx += (dx / dist) * force;
-            ball.vy += (dy / dist) * force;
-          }
-        }
-
-        ball.x += ball.vx;
-        ball.y += ball.vy;
-
-        // paredes
-        if (ball.x - ball.r < 0) {
-          ball.x = ball.r;
-          ball.vx *= -WALL_BOUNCE;
-        } else if (ball.x + ball.r > width) {
-          ball.x = width - ball.r;
-          ball.vx *= -WALL_BOUNCE;
-        }
-        // piso
-        if (ball.y + ball.r > height) {
-          ball.y = height - ball.r;
-          ball.vy *= -WALL_BOUNCE;
-          ball.vx *= 0.98; // fricción con el "piso" de la tina
-        }
-        // techo (por si el impulso del mouse las manda muy arriba)
-        if (ball.y - ball.r < 0) {
-          ball.y = ball.r;
-          ball.vy *= -WALL_BOUNCE;
-        }
-      }
-
-      // colisiones entre pelotas (varias pasadas para que se sientan sólidas)
-      for (let pass = 0; pass < 2; pass++) {
-        for (let i = 0; i < balls.length; i++) {
-          for (let j = i + 1; j < balls.length; j++) {
-            resolveBallCollision(balls[i], balls[j]);
-          }
-        }
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      for (const ball of balls) {
-        const gradient = ctx.createRadialGradient(
-          ball.x - ball.r * 0.35,
-          ball.y - ball.r * 0.4,
-          ball.r * 0.1,
-          ball.x,
-          ball.y,
-          ball.r,
-        );
-        gradient.addColorStop(0, "rgba(255,255,255,0.9)");
-        gradient.addColorStop(0.25, ball.color);
-        gradient.addColorStop(1, "rgba(0,0,0,0.35)");
-        ctx.beginPath();
-        ctx.fillStyle = gradient;
-        ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    function loop() {
-      step();
-      draw();
-      raf = requestAnimationFrame(loop);
-    }
-
-    function updateMouseFromEvent(e) {
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-      mouse.active = true;
-      pit.classList.add("is-touched");
-    }
-
-    pit.addEventListener("mousemove", updateMouseFromEvent);
-    pit.addEventListener("mouseleave", () => {
-      mouse.active = false;
-      mouse.x = -9999;
-      mouse.y = -9999;
-    });
-    pit.addEventListener(
-      "touchmove",
-      (e) => {
-        if (!e.touches[0]) return;
-        updateMouseFromEvent(e.touches[0]);
-      },
-      { passive: true },
-    );
-    pit.addEventListener(
-      "touchend",
-      () => {
-        mouse.active = false;
-      },
-      { passive: true },
-    );
-
-    let resizeTimer = null;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(resize, 150);
-    });
-
-    resize();
-
-    if (reducedMotion) {
-      // sin animación continua: una sola pasada de física para acomodarlas
-      // en el fondo y quedan estáticas, sin loop de requestAnimationFrame.
-      for (let i = 0; i < 90; i++) step();
-      draw();
-    } else if ("IntersectionObserver" in window) {
-      // solo corre la simulación mientras la sección es visible (ahorra batería)
-      const pitObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !raf) {
-              loop();
-            } else if (!entry.isIntersecting && raf) {
-              cancelAnimationFrame(raf);
-              raf = null;
-            }
-          });
-        },
-        { threshold: 0.05 },
-      );
-      pitObserver.observe(pit);
-    } else {
-      loop();
-    }
-  }
-
-  /* ---------- Contact form (front-end only placeholder) ---------- */
-  const form = document.getElementById("contactForm");
-  const status = document.getElementById("formStatus");
-
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) {
-        status.textContent = "Revisa los campos antes de enviar.";
-        status.style.color = "#ff8c82";
-        return;
-      }
-      // Espacio para conectar con un backend/servicio de envío real.
-      status.style.color = "";
-      status.textContent =
-        "¡Gracias! Tu mensaje quedó registrado. Te contactaremos pronto.";
-      form.reset();
-    });
-  }
   /* ---------- Drawer: cajón que sube con el scroll ---------- */
   const drawerSection = document.getElementById("drawer");
   const drawerPanel = document.getElementById("drawerPanel");
+  const drawerReveal = document.getElementById("drawerRevealOverlay");
+  const drawerRevealButton = document.getElementById("drawerRevealButton");
+  const drawerCloseButton = document.getElementById("drawerCloseButton");
+  const releaseKeyButtons = document.querySelectorAll("[data-release-key]");
+  const releaseKeyIndicators = document.querySelectorAll(
+    "[data-release-key-indicator]",
+  );
+  const drawerKeyStatus = document.getElementById("drawerKeyStatus");
+  const drawerCountdownCard = document.querySelector(".drawer__countdown-card");
+  const drawerCodeInput = document.getElementById("drawerSecretCode");
+  const drawerCodeButton = document.getElementById("drawerCodeButton");
+  const drawerCodeFeedback = document.getElementById("drawerCodeFeedback");
+  const drawerCodeHint = document.getElementById("drawerCodeHint");
+  const SECRET_RELEASE_CODE = "CHIVAS";
+  const RELEASE_CODE_CHUNKS = ["CH", "IV", "AS"];
+  const foundDrawerKeys = new Set();
+  let releaseUnlocked = false;
+
+  if (drawerReveal) {
+    document.body.appendChild(drawerReveal);
+  }
+
+  function updateDrawerKeyState() {
+    const allKeysFound = foundDrawerKeys.size === releaseKeyButtons.length;
+    if (drawerCodeHint) {
+      const fragments = RELEASE_CODE_CHUNKS.map((chunk, index) =>
+        foundDrawerKeys.has(String(index + 1)) ? chunk : "__",
+      );
+      drawerCodeHint.textContent = `Fragmentos recuperados: ${fragments.join(" · ")}`;
+    }
+    releaseKeyIndicators.forEach((indicator, index) => {
+      const isFound = foundDrawerKeys.has(String(index + 1));
+      indicator.classList.toggle("is-found", isFound);
+    });
+    if (drawerKeyStatus) {
+      drawerKeyStatus.textContent = allKeysFound
+        ? "Las llaves revelaron un código"
+        : `Encuentra las 3 llaves · ${foundDrawerKeys.size}/3`;
+    }
+    if (drawerCodeInput) drawerCodeInput.disabled = !allKeysFound;
+    if (drawerCodeButton) drawerCodeButton.disabled = !allKeysFound;
+    if (drawerRevealButton && !drawerReveal?.classList.contains("is-open")) {
+      drawerRevealButton.disabled = !releaseUnlocked;
+      drawerRevealButton.textContent = releaseUnlocked
+        ? "Desbloquear release"
+        : allKeysFound
+          ? "Introduce el código"
+          : `${foundDrawerKeys.size}/3 llaves encontradas`;
+    }
+  }
+
+  releaseKeyButtons.forEach((keyButton) => {
+    keyButton.addEventListener("click", () => {
+      const keyId = keyButton.dataset.releaseKey;
+      if (!keyId || foundDrawerKeys.has(keyId)) return;
+
+      foundDrawerKeys.add(keyId);
+      keyButton.classList.add("is-found");
+      keyButton.disabled = true;
+      drawerCountdownCard?.classList.remove("is-glitching");
+      void drawerCountdownCard?.offsetWidth;
+      drawerCountdownCard?.classList.add("is-glitching");
+      updateDrawerKeyState();
+    });
+  });
+
+  function validateReleaseCode() {
+    if (!drawerCodeInput || foundDrawerKeys.size !== releaseKeyButtons.length) {
+      return;
+    }
+
+    const enteredCode = drawerCodeInput.value.trim().toUpperCase();
+    const isValid = enteredCode === SECRET_RELEASE_CODE;
+    drawerCodeFeedback?.classList.toggle("is-error", !isValid);
+    drawerCodeFeedback?.classList.toggle("is-success", isValid);
+
+    if (isValid) {
+      releaseUnlocked = true;
+      if (drawerCodeFeedback) {
+        drawerCodeFeedback.textContent = "Código aceptado · acceso concedido";
+      }
+      updateDrawerKeyState();
+      drawerCountdownCard?.classList.remove("is-glitching");
+      void drawerCountdownCard?.offsetWidth;
+      drawerCountdownCard?.classList.add("is-glitching");
+    } else {
+      if (drawerCodeFeedback) {
+        drawerCodeFeedback.textContent =
+          "Código incorrecto · vuelve a intentarlo";
+      }
+      drawerCodeInput.value = "";
+      drawerCountdownCard?.classList.remove("is-glitching");
+      void drawerCountdownCard?.offsetWidth;
+      drawerCountdownCard?.classList.add("is-glitching");
+    }
+  }
+
+  drawerCodeButton?.addEventListener("click", validateReleaseCode);
+  drawerCodeInput?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") validateReleaseCode();
+  });
+
+  const setDrawerRevealState = (isOpen) => {
+    if (!drawerReveal) return;
+    drawerReveal.classList.toggle("is-open", isOpen);
+    drawerReveal.classList.remove("is-opening");
+    if (isOpen) {
+      void drawerReveal.offsetWidth;
+      drawerReveal.classList.add("is-opening");
+      window.setTimeout(() => drawerReveal.classList.remove("is-opening"), 500);
+    }
+    document.body.classList.toggle("release-is-open", isOpen);
+    drawerReveal.style.opacity = isOpen ? "1" : "0";
+    drawerReveal.style.visibility = isOpen ? "visible" : "hidden";
+    drawerReveal.style.pointerEvents = isOpen ? "auto" : "none";
+    drawerRevealButton?.setAttribute("aria-expanded", String(isOpen));
+    drawerRevealButton.disabled = !isOpen && !releaseUnlocked;
+    drawerRevealButton.textContent = isOpen
+      ? "Cerrar release"
+      : releaseUnlocked
+        ? "Desbloquear release"
+        : foundDrawerKeys.size === releaseKeyButtons.length
+          ? "Introduce el código"
+          : `${foundDrawerKeys.size}/3 llaves encontradas`;
+
+    const video = drawerReveal.querySelector(".drawer__video");
+    if (video) {
+      if (isOpen) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    }
+  };
+
+  updateDrawerKeyState();
+  setDrawerRevealState(false);
+
+  if (drawerReveal && drawerRevealButton) {
+    drawerRevealButton.addEventListener("click", () => {
+      const openNow = !drawerReveal.classList.contains("is-open");
+      setDrawerRevealState(openNow);
+    });
+  }
+
+  if (drawerCloseButton) {
+    drawerCloseButton.addEventListener("click", () =>
+      setDrawerRevealState(false),
+    );
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && drawerReveal?.classList.contains("is-open")) {
+      setDrawerRevealState(false);
+    }
+  });
 
   if (drawerSection && drawerPanel) {
     let ticking = false;
