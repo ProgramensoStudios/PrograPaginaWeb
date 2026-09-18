@@ -241,6 +241,14 @@ section {
   padding: 0;
 }
 
+.palacancha-hero a,
+.palacancha-hero picture,
+.palacancha-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .section-head {
   display: flex;
   flex-direction: column;
