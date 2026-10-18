@@ -620,4 +620,241 @@
     window.addEventListener("scroll", onDrawerScroll, { passive: true });
     window.addEventListener("resize", updateDrawer);
   }
+
+  /* ==========================================================================
+   CHAMAKAS — carrusel automático con miniaturas
+   Lee las capturas del bucket de Supabase y las muestra de la más reciente
+   a la más antigua. Cuando llega una nueva, salta sola a ella.
+   ========================================================================== */
+  (() => {
+    "use strict";
+
+    /* ===== CONFIGURA ESTO (los mismos datos que usas en Unity) ===== */
+    const SUPABASE_URL = "https://rdtlzubkyluatrlbblgn.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_yE8tHLujAJn_m7mpjrXmWw_fI6W7Y2R";
+    const BUCKET = "screenshots";
+    const MAX_ITEMS = 100; // máximo de obras que se muestran
+    const SLIDE_MS = 4500; // tiempo entre imágenes
+    const REFRESH_MS = 15000; // cada cuánto revisa si hay capturas nuevas
+    /* =============================================================== */
+
+    const root = document.querySelector("[data-chamakas]");
+    if (!root) return;
+
+    const screen = root.querySelector(".chamakas__screen");
+    const layers = Array.from(root.querySelectorAll(".chamakas__layer"));
+    const thumbsEl = root.querySelector(".chamakas__thumbs");
+    const bar = root.querySelector(".chamakas__bar");
+    const emptyEl = root.querySelector(".chamakas__empty");
+    const countEl = root.querySelector("[data-ch-count]");
+    const dateEl = root.querySelector("[data-ch-date]");
+
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    bar.style.setProperty("--dur", SLIDE_MS + "ms");
+
+    let items = [];
+    let index = 0;
+    let front = 0; // cuál de las 2 capas se ve ahora
+    let seq = 0;
+    let loaded = false;
+
+    const base = SUPABASE_URL.replace(/\/$/, "");
+    const headers = {
+      apikey: SUPABASE_KEY,
+      "Content-Type": "application/json",
+    };
+    if (SUPABASE_KEY.startsWith("eyJ"))
+      headers.Authorization = "Bearer " + SUPABASE_KEY;
+
+    const publicUrl = (name) =>
+      `${base}/storage/v1/object/public/${BUCKET}/${encodeURIComponent(name)}`;
+    const fmtDate = (iso) =>
+      new Date(iso).toLocaleDateString("es-MX", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+
+    function showMessage(text) {
+      emptyEl.textContent = text;
+      root.classList.add("is-empty");
+      bar.classList.remove("is-running");
+    }
+
+    /* ---------- Barra de progreso = temporizador del autoplay ---------- */
+    function restartBar() {
+      bar.classList.remove("is-running");
+      void bar.offsetWidth; // reinicia la animación
+      if (!reduce && items.length > 1) bar.classList.add("is-running");
+    }
+    bar.addEventListener("animationend", () => show(index + 1));
+
+    /* ---------- Mostrar una obra ---------- */
+    function show(i) {
+      if (!items.length) return;
+      index = (i + items.length) % items.length;
+      const it = items[index];
+      const token = ++seq;
+      updateUi(it);
+
+      const cur = layers[front];
+      const nxt = layers[1 - front];
+      if (cur.dataset.url === it.url) return;
+
+      const swap = () => {
+        if (token !== seq) return; // llegó otra petición más nueva
+        nxt.classList.add("is-on");
+        cur.classList.remove("is-on");
+        front = 1 - front;
+      };
+      nxt.onload = swap;
+      nxt.onerror = swap;
+      nxt.alt = `Obra ${index + 1} de ${items.length}`;
+      if (nxt.dataset.url === it.url && nxt.complete) {
+        swap();
+      } else {
+        nxt.dataset.url = it.url;
+        nxt.src = it.url;
+      }
+    }
+
+    function updateUi(it) {
+      countEl.textContent = `${index + 1} / ${items.length}`;
+      dateEl.textContent = fmtDate(it.date);
+      Array.from(thumbsEl.children).forEach((b, k) => {
+        b.classList.toggle("is-active", k === index);
+        b.setAttribute("aria-current", k === index ? "true" : "false");
+      });
+      const t = thumbsEl.children[index];
+      if (t) {
+        thumbsEl.scrollTo({
+          left: t.offsetLeft - (thumbsEl.clientWidth - t.offsetWidth) / 2,
+          behavior: reduce ? "auto" : "smooth",
+        });
+      }
+      restartBar();
+    }
+
+    function buildThumbs() {
+      thumbsEl.textContent = "";
+      items.forEach((it, k) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "chamakas__thumb";
+        b.setAttribute("aria-label", `Ver obra ${k + 1}`);
+        const im = new Image();
+        im.src = it.url;
+        im.alt = "";
+        im.loading = "lazy";
+        im.decoding = "async";
+        b.append(im);
+        b.addEventListener("click", () => show(k));
+        thumbsEl.append(b);
+      });
+    }
+
+    /* ---------- Aplicar la lista recibida ---------- */
+    function apply(next) {
+      const key = next.map((i) => i.name).join("|");
+      const prevKey = items.map((i) => i.name).join("|");
+      if (loaded && key === prevKey) return;
+
+      const prevCurrent = items[index] && items[index].name;
+      const prevFirst = items[0] && items[0].name;
+      items = next;
+
+      if (!items.length) {
+        loaded = true;
+        showMessage(
+          "Aún no hay obras guardadas. ¡Sé el primero en dejar la tuya!",
+        );
+        return;
+      }
+
+      root.classList.remove("is-empty");
+      buildThumbs();
+
+      // Si llegó una captura nueva, salta a ella (la más reciente va primero).
+      // Si no, se queda en la obra que estaba viendo.
+      let start = 0;
+      if (loaded && items[0].name === prevFirst) {
+        const k = items.findIndex((x) => x.name === prevCurrent);
+        start = k >= 0 ? k : 0;
+      }
+      loaded = true;
+      show(start);
+    }
+
+    /* ---------- Pedir la lista a Supabase ---------- */
+    async function load() {
+      try {
+        const res = await fetch(`${base}/storage/v1/object/list/${BUCKET}`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify({
+            prefix: "",
+            limit: MAX_ITEMS,
+            offset: 0,
+            sortBy: { column: "created_at", order: "desc" },
+          }),
+        });
+        if (!res.ok) throw new Error(res.status);
+        const files = (await res.json()).filter(
+          (f) => f && f.id && f.name && !f.name.startsWith("."),
+        );
+        files.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        apply(
+          files.slice(0, MAX_ITEMS).map((f) => ({
+            name: f.name,
+            url: publicUrl(f.name),
+            date: f.created_at,
+          })),
+        );
+      } catch (e) {
+        if (!loaded)
+          showMessage(
+            "No pudimos cargar las obras por ahora. Intenta de nuevo en un momento.",
+          );
+      }
+    }
+
+    /* ---------- Controles ---------- */
+    root
+      .querySelector("[data-ch-prev]")
+      .addEventListener("click", () => show(index - 1));
+    root
+      .querySelector("[data-ch-next]")
+      .addEventListener("click", () => show(index + 1));
+
+    // Pausa el autoplay mientras el mouse está encima de la pantalla
+    screen.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "mouse") root.classList.add("is-paused");
+    });
+    screen.addEventListener("pointerleave", () =>
+      root.classList.remove("is-paused"),
+    );
+
+    // Deslizar con el dedo en celular
+    let x0 = null;
+    screen.addEventListener("pointerdown", (e) => {
+      x0 = e.clientX;
+    });
+    screen.addEventListener("pointercancel", () => {
+      x0 = null;
+    });
+    screen.addEventListener("pointerup", (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+    });
+
+    load();
+    setInterval(load, REFRESH_MS);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) load();
+    });
+  })();
 })();

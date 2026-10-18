@@ -3395,3 +3395,190 @@ section.team#equipo {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
+/* ==========================================================================
+   CHAMAKAS — galería tipo carrusel (capturas enviadas desde Unity)
+   Sección de 1920x1080 como las demás, justo antes del footer.
+   Usa las variables de styles.css (--lavender, --lime, --font-display...).
+   ========================================================================== */
+
+.chamakas{
+  height: auto;               /* anula el height:100% de [data-bg] */
+  min-height: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 70px 24px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.chamakas__title{
+  width: min(640px, 80vw);
+  height: auto;
+}
+
+.chamakas__desc{
+  margin: 0;
+  padding: .7rem 1.6rem;
+  background: var(--black);
+  color: var(--white);
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(.95rem, 2.2vw, 1.25rem);
+}
+
+/* ---------- Pantalla principal ---------- */
+.chamakas__screen{
+  position: relative;
+  width: min(1000px, 92vw);
+  aspect-ratio: 16 / 10;       /* mismo formato que las capturas de Unity (1280x800) */
+  background: var(--black);
+  border: 2px solid var(--lavender);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .55);
+  touch-action: pan-y;
+}
+
+.chamakas__layer{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity .7s ease;
+}
+.chamakas__layer.is-on{ opacity: 1; }
+
+.chamakas__empty{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 24px;
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+.chamakas:not(.is-empty) .chamakas__empty{ display: none; }
+.chamakas.is-empty .chamakas__layer,
+.chamakas.is-empty .chamakas__arrow,
+.chamakas.is-empty .chamakas__chip,
+.chamakas.is-empty .chamakas__bar,
+.chamakas.is-empty .chamakas__thumbs{ display: none; }
+
+/* ---------- Flechas ---------- */
+.chamakas__arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .55);
+  color: var(--white);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.chamakas__arrow--prev{ left: 14px; }
+.chamakas__arrow--next{ right: 14px; }
+.chamakas__arrow:hover{ background: var(--lime); color: var(--black); }
+
+/* ---------- Contador + fecha ---------- */
+.chamakas__chip{
+  position: absolute;
+  left: 14px;
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  gap: 12px;
+  padding: .35rem .8rem;
+  background: rgba(0, 0, 0, .65);
+  color: var(--white);
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+/* ---------- Barra de progreso (marca cuándo cambia sola) ---------- */
+.chamakas__bar{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  height: 4px;
+  background: var(--lime);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+.chamakas__bar.is-running{
+  animation: chamakas-bar var(--dur, 4500ms) linear forwards;
+}
+.chamakas.is-paused .chamakas__bar{ animation-play-state: paused; }
+@keyframes chamakas-bar{
+  from{ transform: scaleX(0); }
+  to{ transform: scaleX(1); }
+}
+
+/* ---------- Miniaturas (la más reciente a la izquierda) ---------- */
+.chamakas__thumbs{
+  position: relative;          /* necesario para centrar la miniatura activa */
+  display: flex;
+  gap: 10px;
+  width: min(1000px, 92vw);
+  padding: 8px 4px 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--lavender) transparent;
+}
+.chamakas__thumb{
+  flex: 0 0 auto;
+  width: 120px;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: var(--black);
+  overflow: hidden;
+  opacity: .6;
+  cursor: pointer;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+.chamakas__thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.chamakas__thumb:hover{ opacity: .9; }
+.chamakas__thumb.is-active{
+  opacity: 1;
+  border-color: var(--lime);
+}
+
+.chamakas__arrow:focus-visible,
+.chamakas__thumb:focus-visible{
+  outline: 3px solid var(--lime);
+  outline-offset: 2px;
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 760px){
+  .chamakas{
+    min-height: auto;
+    padding: 100px 14px 70px;
+  }
+  .chamakas__arrow{ width: 38px; height: 38px; font-size: 1.4rem; }
+  .chamakas__arrow--prev{ left: 8px; }
+  .chamakas__arrow--next{ right: 8px; }
+  .chamakas__thumb{ width: 84px; }
+}

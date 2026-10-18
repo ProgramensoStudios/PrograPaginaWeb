@@ -1684,6 +1684,54 @@
       </div>
     </section>
 
+     <!-- ============ CHAMAKAS (galería de capturas desde Unity) ============ -->
+    <section
+      class="chamakas"
+      id="chamakas"
+      data-chamakas
+      data-bg
+      style="--bg-image: url(&quot;recursos/secciones/chamakas.png&quot;)"
+    >
+      <img
+        class="chamakas__title reveal"
+        src="recursos/secciones/chamakas_titulo.png"
+        alt="Chamakas"
+        loading="lazy"
+      />
+      <p class="chamakas__desc reveal">Aquí guardamos tu obra de arte.</p>
+
+      <div class="chamakas__screen">
+        <img class="chamakas__layer is-on" alt="" />
+        <img class="chamakas__layer" alt="" />
+        <p class="chamakas__empty" role="status">Cargando obras…</p>
+
+        <button
+          type="button"
+          class="chamakas__arrow chamakas__arrow--prev"
+          data-ch-prev
+          aria-label="Obra anterior"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          class="chamakas__arrow chamakas__arrow--next"
+          data-ch-next
+          aria-label="Obra siguiente"
+        >
+          ›
+        </button>
+
+        <div class="chamakas__chip">
+          <span data-ch-count></span>
+          <span data-ch-date></span>
+        </div>
+        <div class="chamakas__bar" aria-hidden="true"></div>
+      </div>
+
+      <div class="chamakas__thumbs" aria-label="Miniaturas de las obras"></div>
+    </section>
+
     <!-- ============ FOOTER / CONTACTO B2B ============ -->
     <footer
       class="footer"
